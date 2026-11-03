@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Crear pelotas con preload e instantiate · Godot 2D paso a paso</title>
+<meta name="description" content="Una escena Pelota hace de plantilla: cada vez que pulsas la barra espaciadora, un Generador crea una copia nueva con preload, instantiate y add_child.">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 5</p>
+<h1>Crear pelotas con preload e instantiate</h1>
+<p class="entrada">Una escena Pelota hace de plantilla: cada vez que pulsas la barra espaciadora, un Generador crea una copia nueva con preload, instantiate y add_child.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás una escena <b>pelota.tscn</b> y un <b>Generador</b> (Marker2D) que crea una pelota nueva cada vez que pulsas <kbd>Espacio</kbd>.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 4: Suelo, Personaje, Zona con contador y Muelle.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos que usamos</h2><div class="conceptos"><div class="concepto"><code>Escena como plantilla</code><p>Un <code>.tscn</code> guardado es un <b>molde</b>: se pueden sacar todas las copias que quieras.</p></div><div class="concepto"><code>preload("res://...")</code><p><b>Carga</b> la escena una sola vez, al empezar el juego.</p></div><div class="concepto"><code>instantiate()</code><p>Crea una <b>copia nueva</b> de la escena cargada.</p></div><div class="concepto"><code>add_child(nodo)</code><p><b>Mete</b> el nodo en la escena para que aparezca y funcione. Sin esto, la copia existe pero no se ve.</p></div><div class="concepto"><code>Marker2D</code><p>Nodo que solo marca una <b>posición</b>. En el editor es una cruz; al jugar no se ve.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Crea una escena nueva</h3>
+<p>En el menú <b>Escena</b>, elige <b>Nueva Escena</b>. Se abre una pestaña vacía.</p>
+<figure><a href="img/01_nueva_escena.jpg" target="_blank"><img src="img/01_nueva_escena.jpg" alt="Crea una escena nueva" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Nueva Escena</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Raíz: un RigidBody2D</h3>
+<p>En <b>Crear Nodo Raíz</b> pulsa <b>Otro Nodo</b>, busca <code>RigidBody2D</code> y pulsa <b>Crear</b>. Renómbralo a <b>Pelota</b> (<kbd>F2</kbd>).</p>
+<figure><a href="img/02_raiz_rigidbody.jpg" target="_blank"><img src="img/02_raiz_rigidbody.jpg" alt="Raíz: un RigidBody2D" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Busca RigidBody2D</li><li><span class="num">2</span>Se mueve con la física</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Forma y dibujo</h3>
+<p>Añade a Pelota un <code>CollisionShape2D</code> con un <b>CircleShape2D</b> de <b>Radius</b> <code>24</code>. Añade también un <code>Sprite2D</code>: arrastra <code>icon.svg</code> a su <b>Texture</b> y pon <b>Scale</b> <code>0.4</code> y <code>0.4</code>.</p>
+<figure><a href="img/03_pelota.jpg" target="_blank"><img src="img/03_pelota.jpg" alt="Forma y dibujo" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Pelota, forma y dibujo</li><li><span class="num">2</span>La pelota</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Guárdala: es la plantilla</h3>
+<p>Pulsa <kbd>Ctrl</kbd>+<kbd>S</kbd> y guárdala como <code>pelota.tscn</code>. Esta escena es el <b>molde</b> del que saldrán todas las pelotas.</p>
+<figure><a href="img/04_guardar_pelota.jpg" target="_blank"><img src="img/04_guardar_pelota.jpg" alt="Guárdala: es la plantilla" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>pelota.tscn</li><li><span class="num">2</span>Guardar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Añade un Marker2D</h3>
+<p>Vuelve a la pestaña <b>node_2d</b>. Selecciona <code>Node2D</code> y añade un hijo <code>Marker2D</code>.</p>
+<figure><a href="img/05_crear_marker.jpg" target="_blank"><img src="img/05_crear_marker.jpg" alt="Añade un Marker2D" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Vuelve a node_2d</li><li><span class="num">2</span>Busca Marker2D</li><li><span class="num">3</span>Solo una posición</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Llámalo Generador y colócalo</h3>
+<p>Renómbralo a <b>Generador</b> y pon <b>Position</b> <code>x = 450</code>, <code>y = 100</code>: arriba, desde donde caerán las pelotas.</p>
+<figure><a href="img/06_generador.jpg" target="_blank"><img src="img/06_generador.jpg" alt="Llámalo Generador y colócalo" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Generador</li><li><span class="num">2</span>Position: 450, 100</li><li><span class="num">3</span>La cruz del Marker2D</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Añade un script al Generador</h3>
+<p>Con Generador seleccionado, pulsa el botón de <b>añadir script</b>. Hereda de <code>Marker2D</code> y se guarda como <code>res://generador.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/07_script_generador.jpg" target="_blank"><img src="img/07_script_generador.jpg" alt="Añade un script al Generador" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Marker2D</li><li><span class="num">2</span>generador.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Escribe el código</h3>
+<p>Sustituye el script por este código y guarda. <code>preload</code> carga la escena una vez. Al pulsar <code>ui_accept</code> (barra espaciadora o <kbd>Intro</kbd>), <code>instantiate()</code> hace una copia, le damos la posición del Generador y <code>add_child</code> la mete en la escena.</p><pre class="codigo"><code>extends Marker2D
+
+var plantilla = preload(&quot;res://pelota.tscn&quot;)
+
+
+func _process(delta: float) -&gt; void:
+	if Input.is_action_just_pressed(&quot;ui_accept&quot;):
+		var pelota = plantilla.instantiate()
+		pelota.position = position
+		get_parent().add_child(pelota)</code></pre>
+<figure><a href="img/08_codigo.jpg" target="_blank"><img src="img/08_codigo.jpg" alt="Escribe el código" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Carga el molde</li><li><span class="num">2</span>Al pulsar Espacio</li><li><span class="num">3</span>Copia nueva</li><li><span class="num">4</span>Donde el Generador</li><li><span class="num">5</span>La mete en el juego</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Ejecuta y pulsa Espacio</h3>
+<p>Ejecuta con <kbd>F5</kbd> y pulsa <kbd>Espacio</kbd> varias veces: cada pulsación crea una pelota nueva que cae desde el Generador.</p>
+<figure><a href="img/09_juego_pelotas.jpg" target="_blank"><img src="img/09_juego_pelotas.jpg" alt="Ejecuta y pulsa Espacio" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Una pelota por pulsación</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Una escena guardada (<code>.tscn</code>) es una <b>plantilla</b>.</li><li><code>preload</code> la carga e <code>instantiate()</code> crea copias.</li><li><code>add_child</code> mete cada copia en el juego.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Pulso Espacio y no pasa nada.</b> ¿Falta <code>add_child</code>? Sin él la pelota no entra en la escena. Comprueba también que el script está en el Generador.</li><li><b>Error al cargar «res://pelota.tscn».</b> La ruta de <code>preload</code> debe coincidir exactamente con el nombre del archivo (mira el Sistema de Archivos).</li><li><b>Las pelotas aparecen en la esquina de arriba a la izquierda.</b> Falta <code>pelota.position = position</code>.</li><li><b>La pelota no cae.</b> La raíz de pelota.tscn debe ser un <code>RigidBody2D</code>, no un Node2D.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Dale a cada pelota un impulso al nacer: <code>pelota.apply_central_impulse(Vector2.RIGHT * 300)</code>.</li><li>Mueve el Generador encima de la Zona: ¿qué pasa con el contador?</li><li>Cambia la tecla por otra acción, por ejemplo <code>ui_down</code>.</li></ul></section>
+<nav class="navegacion"><a href="../04-muelle-animado/index.html">← Un muelle con Area2D y AnimatedSprite2D</a><a href="../06-area-destructor/index.html">Un Area2D que borra pelotas: grupos y queue_free →</a></nav>
+</main>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+</body>
+</html>

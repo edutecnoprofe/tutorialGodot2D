@@ -13,7 +13,10 @@
 <main><div class="lista"><a class="tarjeta" href="01-cuerpos-fisicos/index.html"><span class="paso-n">1</span>
 <div><h3>Cuerpos físicos: StaticBody2D y RigidBody2D</h3><p>Creamos un suelo que no se mueve y un personaje que cae por la gravedad y se queda apoyado sobre él.</p></div></a><a class="tarjeta" href="02-impulsos/index.html"><span class="paso-n">2</span>
 <div><h3>Mover un RigidBody2D con impulsos</h3><p>Con un script leemos las flechas del teclado y empujamos al personaje con apply_central_impulse: salta y rueda.</p></div></a><a class="tarjeta" href="03-area-contador/index.html"><span class="paso-n">3</span>
-<div><h3>Area2D y señales: un contador</h3><p>Una zona invisible (Area2D) detecta cuándo entra el personaje y, con la señal body_entered, suma 1 a un contador en pantalla.</p></div></a></div></main>
+<div><h3>Area2D y señales: un contador</h3><p>Una zona invisible (Area2D) detecta cuándo entra el personaje y, con la señal body_entered, suma 1 a un contador en pantalla.</p></div></a><a class="tarjeta" href="04-muelle-animado/index.html"><span class="paso-n">4</span>
+<div><h3>Un muelle con Area2D y AnimatedSprite2D</h3><p>Un Area2D con forma de muelle: cuando entra el personaje, reproduce una animación de fotogramas y le da un impulso hacia arriba.</p></div></a><a class="tarjeta" href="05-crear-pelotas/index.html"><span class="paso-n">5</span>
+<div><h3>Crear pelotas con preload e instantiate</h3><p>Una escena Pelota hace de plantilla: cada vez que pulsas la barra espaciadora, un Generador crea una copia nueva con preload, instantiate y add_child.</p></div></a><a class="tarjeta" href="06-area-destructor/index.html"><span class="paso-n">6</span>
+<div><h3>Un Area2D que borra pelotas: grupos y queue_free</h3><p>Las pelotas llevan la etiqueta del grupo «pelotas». Un Area2D Destructor borra con queue_free los cuerpos con esa etiqueta y deja en paz al personaje.</p></div></a></div></main>
 <footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="index.html">Todos los tutoriales</a></p></footer>
 </body>
 </html>

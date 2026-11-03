@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Un muelle con Area2D y AnimatedSprite2D · Godot 2D paso a paso</title>
+<meta name="description" content="Un Area2D con forma de muelle: cuando entra el personaje, reproduce una animación de fotogramas y le da un impulso hacia arriba.">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 4</p>
+<h1>Un muelle con Area2D y AnimatedSprite2D</h1>
+<p class="entrada">Un Area2D con forma de muelle: cuando entra el personaje, reproduce una animación de fotogramas y le da un impulso hacia arriba.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás un <b>Muelle</b> (Area2D) sobre el suelo. Cuando el personaje lo toque, el muelle se estirará con una <b>animación</b> y lo lanzará hacia arriba con <code>apply_central_impulse</code>.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 3 (Suelo, Personaje que se mueve con las flechas y Zona con contador) más la imagen <code>muelle.png</code>, que ya viene en el zip de inicio.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos que usamos</h2><div class="conceptos"><div class="concepto"><code>AnimatedSprite2D</code><p>Como un Sprite2D, pero con <b>varios dibujos</b> (fotogramas) que se van turnando para formar una animación.</p></div><div class="concepto"><code>SpriteFrames</code><p>Recurso que guarda las <b>animaciones</b> del AnimatedSprite2D: cada una con su nombre, sus fotogramas y su velocidad.</p></div><div class="concepto"><code>Hoja de sprites</code><p>Una sola imagen con todos los fotogramas en fila. Godot la <b>corta</b> en trozos iguales.</p></div><div class="concepto"><code>play("nombre")</code><p>Reproduce la animación con ese nombre desde el código.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre el proyecto y selecciona el nodo raíz <code>Node2D</code>. En el Sistema de Archivos está <code>muelle.png</code>: una <b>hoja de sprites</b> con los 8 dibujos del muelle en fila.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Nodo raíz</li><li><span class="num">2</span>Hoja de sprites</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Añade un Area2D</h3>
+<p>Pulsa <b>+</b>, busca <code>Area2D</code> y pulsa <b>Crear</b>. Cámbiale el nombre a <b>Muelle</b> (<kbd>F2</kbd>).</p>
+<figure><a href="img/02_crear_area.jpg" target="_blank"><img src="img/02_crear_area.jpg" alt="Añade un Area2D" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Busca Area2D</li><li><span class="num">2</span>Area2D</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Dale forma y colócalo</h3>
+<p>Añade a Muelle un <code>CollisionShape2D</code> con un <b>RectangleShape2D</b> de <code>112 × 112</code>. Selecciona <b>Muelle</b> y pon <b>Position</b> <code>x = 250</code>, <code>y = 514</code>: queda apoyado en el suelo, a la izquierda.</p>
+<figure><a href="img/03_muelle_colocado.jpg" target="_blank"><img src="img/03_muelle_colocado.jpg" alt="Dale forma y colócalo" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Muelle y su forma</li><li><span class="num">2</span>Position: 250, 514</li><li><span class="num">3</span>El muelle en el visor</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Añade un AnimatedSprite2D</h3>
+<p>Con <b>Muelle</b> seleccionado, añade un hijo <code>AnimatedSprite2D</code>.</p>
+<figure><a href="img/04_crear_animated.jpg" target="_blank"><img src="img/04_crear_animated.jpg" alt="Añade un AnimatedSprite2D" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Busca AnimatedSprite2D</li><li><span class="num">2</span>Varios dibujos = animación</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Crea un SpriteFrames</h3>
+<p>En el Inspector, despliega <b>Sprite Frames</b> y elige <b>Nuevo SpriteFrames</b>. Después haz clic sobre él: abajo se abre el panel <b>Fotogramas de Sprite</b>.</p>
+<figure><a href="img/05_nuevo_spriteframes.jpg" target="_blank"><img src="img/05_nuevo_spriteframes.jpg" alt="Crea un SpriteFrames" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Sprite Frames</li><li><span class="num">2</span>Nuevo SpriteFrames</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Corta la hoja de sprites</h3>
+<p>En el panel, pulsa el botón <b>Añadir fotogramas desde una hoja de sprites</b> (icono de cuadrícula) y elige <code>muelle.png</code>. Pon <b>Horizontal</b> <code>8</code> y <b>Vertical</b> <code>1</code>, pulsa <b>Elegir Todo</b> y luego <b>Añadir 8 Fotograma(s)</b>.</p>
+<figure><a href="img/06_hoja_sprites.jpg" target="_blank"><img src="img/06_hoja_sprites.jpg" alt="Corta la hoja de sprites" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>8 × 1</li><li><span class="num">2</span>Elegir Todo</li><li><span class="num">3</span>Los 8 fotogramas</li><li><span class="num">4</span>Añadir</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Prepara la animación</h3>
+<p>Haz doble clic en <code>default</code> y renómbrala a <b>saltar</b>. Pon <code>15</code> FPS y <b>desactiva el bucle</b> (el botón de las flechas en círculo): el muelle se estira una vez y se para.</p>
+<figure><a href="img/07_animacion.jpg" target="_blank"><img src="img/07_animacion.jpg" alt="Prepara la animación" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Animación «saltar»</li><li><span class="num">2</span>Sin bucle, 15 FPS</li><li><span class="num">3</span>Fotogramas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Escala y filtro</h3>
+<p>El dibujo mide solo 28 px. En <b>Transform → Scale</b> pon <code>4</code> y <code>4</code>. En <b>CanvasItem → Texture → Filter</b> elige <b>Nearest</b> para que el pixel art se vea nítido y no borroso.</p>
+<figure><a href="img/08_escala_filtro.jpg" target="_blank"><img src="img/08_escala_filtro.jpg" alt="Escala y filtro" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>AnimatedSprite2D</li><li><span class="num">2</span>Filter: Nearest</li><li><span class="num">3</span>Escala 4</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Añade un script al Muelle</h3>
+<p>Selecciona <b>Muelle</b> y pulsa el botón de <b>añadir script</b>. Hereda de <code>Area2D</code> y se guarda como <code>res://muelle.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/09_script_muelle.jpg" target="_blank"><img src="img/09_script_muelle.jpg" alt="Añade un script al Muelle" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Area2D</li><li><span class="num">2</span>muelle.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Conecta la señal body_entered</h3>
+<p>En la pestaña <b>Señales</b>, haz doble clic en <code>body_entered</code>. Elige <b>Muelle</b> como receptor (baja en la lista si hace falta). El método se llamará <code>_on_body_entered</code>. Pulsa <b>Conectar</b>.</p>
+<figure><a href="img/10_conectar.jpg" target="_blank"><img src="img/10_conectar.jpg" alt="Conecta la señal body_entered" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>body_entered</li><li><span class="num">2</span>Receptor: Muelle</li><li><span class="num">3</span>Nombre de la función</li><li><span class="num">4</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-11">
+<h3><span class="paso-n">11</span>Escribe el código del muelle</h3>
+<p>Sustituye el script por este código y guarda. Si lo que entra es un <code>RigidBody2D</code>, reproduce la animación <code>saltar</code> y empuja <b>al cuerpo que ha entrado</b> (<code>body</code>) hacia arriba.</p><pre class="codigo"><code>extends Area2D
+
+
+func _on_body_entered(body: Node2D) -&gt; void:
+	if body is RigidBody2D:
+		$AnimatedSprite2D.play(&quot;saltar&quot;)
+		body.apply_central_impulse(Vector2.UP * 1000)</code></pre>
+<figure><a href="img/11_codigo.jpg" target="_blank"><img src="img/11_codigo.jpg" alt="Escribe el código del muelle" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>¿Es un RigidBody2D?</li><li><span class="num">2</span>Reproduce «saltar»</li><li><span class="num">3</span>Impulso hacia arriba</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-12">
+<h3><span class="paso-n">12</span>Ejecuta y salta</h3>
+<p>Ejecuta con <kbd>F5</kbd> y pulsa <kbd>←</kbd>. Cuando el personaje toca el muelle, este se estira y lo lanza hacia arriba.</p>
+<figure><a href="img/12_juego_muelle.jpg" target="_blank"><img src="img/12_juego_muelle.jpg" alt="Ejecuta y salta" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>El muelle se estira</li><li><span class="num">2</span>¡Arriba!</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>AnimatedSprite2D</b> reproduce animaciones hechas de fotogramas (SpriteFrames).</li><li>Con <code>play("saltar")</code> eliges qué animación se reproduce.</li><li><code>body_entered</code> te da el cuerpo que ha entrado: puedes empujarlo con <code>apply_central_impulse</code>.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>El muelle no se anima.</b> El nombre de <code>play("saltar")</code> debe ser <b>exactamente</b> el de la animación del panel (minúsculas incluidas).</li><li><b>La animación no para nunca.</b> Desactiva el <b>bucle</b> de la animación en el panel Fotogramas de Sprite.</li><li><b>El muelle se ve borroso.</b> Pon <b>Texture → Filter</b> en <b>Nearest</b> en el AnimatedSprite2D.</li><li><b>Error «Node not found: AnimatedSprite2D».</b> El AnimatedSprite2D debe ser <b>hijo de Muelle</b> y conservar su nombre.</li><li><b>No sale disparado.</b> Mira que la función tenga el <b>icono verde</b> (señal conectada) y que el receptor sea Muelle.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia la fuerza a <code>1500</code>: ¿hasta dónde llega?</li><li>Pon el impulso en diagonal con <code>Vector2(1, -1)</code>.</li><li>Saca la fuerza a una variable <code>@export</code> como en el tutorial 2 y ajústala desde el Inspector.</li></ul></section>
+<nav class="navegacion"><a href="../03-area-contador/index.html">← Area2D y señales: un contador</a><a href="../05-crear-pelotas/index.html">Crear pelotas con preload e instantiate →</a></nav>
+</main>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+</body>
+</html>

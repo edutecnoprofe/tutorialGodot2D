@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Un Area2D que borra pelotas: grupos y queue_free · Godot 2D paso a paso</title>
+<meta name="description" content="Las pelotas llevan la etiqueta del grupo «pelotas». Un Area2D Destructor borra con queue_free los cuerpos con esa etiqueta y deja en paz al personaje.">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 6</p>
+<h1>Un Area2D que borra pelotas: grupos y queue_free</h1>
+<p class="entrada">Las pelotas llevan la etiqueta del grupo «pelotas». Un Area2D Destructor borra con queue_free los cuerpos con esa etiqueta y deja en paz al personaje.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, las pelotas que caigan sobre el <b>Destructor</b> (Area2D) desaparecerán del juego, pero el personaje podrá pasar por encima sin borrarse.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 5: Suelo, Personaje, Zona, Muelle y Generador que crea pelotas con <kbd>Espacio</kbd>.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos que usamos</h2><div class="conceptos"><div class="concepto"><code>Grupo</code><p>Una <b>etiqueta</b> que se pone a los nodos. Muchos nodos pueden llevar la misma.</p></div><div class="concepto"><code>is_in_group("nombre")</code><p>Pregunta si un nodo <b>lleva la etiqueta</b>. Devuelve verdadero o falso.</p></div><div class="concepto"><code>queue_free()</code><p><b>Borra</b> el nodo del juego (al terminar el fotograma actual).</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Crea el grupo «pelotas»</h3>
+<p>Abre <code>pelota.tscn</code> (doble clic en el Sistema de Archivos) y selecciona <b>Pelota</b>. En la pestaña <b>Grupos</b>, pulsa <b>+</b>, escribe <code>pelotas</code> y pulsa <b>Aceptar</b>.</p>
+<figure><a href="img/01_crear_grupo.jpg" target="_blank"><img src="img/01_crear_grupo.jpg" alt="Crea el grupo «pelotas»" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Pelota</li><li><span class="num">2</span>Pestaña Grupos</li><li><span class="num">3</span>pelotas</li><li><span class="num">4</span>Aceptar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>La pelota ya lleva la etiqueta</h3>
+<p>El grupo aparece marcado y junto a Pelota sale un icono. Guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd>: todas las pelotas que se creen llevarán la etiqueta <code>pelotas</code>.</p>
+<figure><a href="img/02_grupo_pelotas.jpg" target="_blank"><img src="img/02_grupo_pelotas.jpg" alt="La pelota ya lleva la etiqueta" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Grupo pelotas</li><li><span class="num">2</span>Icono de grupo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Añade el Destructor</h3>
+<p>Vuelve a la pestaña <b>node_2d</b>. Añade al Node2D un <code>Area2D</code> llamado <b>Destructor</b>, con un <code>CollisionShape2D</code> <b>RectangleShape2D</b> de <code>160 × 80</code>. Pon <b>Position</b> <code>x = 450</code>, <code>y = 540</code>: sobre el suelo, justo debajo del Generador.</p>
+<figure><a href="img/03_destructor.jpg" target="_blank"><img src="img/03_destructor.jpg" alt="Añade el Destructor" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Destructor y su forma</li><li><span class="num">2</span>Position: 450, 540</li><li><span class="num">3</span>El Destructor</li><li><span class="num">4</span>El Generador, encima</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Añade un script al Destructor</h3>
+<p>Con Destructor seleccionado, pulsa <b>añadir script</b>. Hereda de <code>Area2D</code> y se guarda como <code>res://destructor.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/04_script_destructor.jpg" target="_blank"><img src="img/04_script_destructor.jpg" alt="Añade un script al Destructor" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Area2D</li><li><span class="num">2</span>destructor.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Conecta body_entered</h3>
+<p>En la pestaña <b>Señales</b>, haz doble clic en <code>body_entered</code>, elige <b>Destructor</b> como receptor y pulsa <b>Conectar</b>.</p>
+<figure><a href="img/05_conectar.jpg" target="_blank"><img src="img/05_conectar.jpg" alt="Conecta body_entered" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>body_entered</li><li><span class="num">2</span>Receptor: Destructor</li><li><span class="num">3</span>_on_body_entered</li><li><span class="num">4</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Escribe el código</h3>
+<p>Sustituye el script por este código y guarda. Si el cuerpo que entra lleva la etiqueta <code>pelotas</code>, <code>queue_free()</code> lo borra. El personaje no la lleva, así que se queda.</p><pre class="codigo"><code>extends Area2D
+
+
+func _on_body_entered(body: Node2D) -&gt; void:
+	if body.is_in_group(&quot;pelotas&quot;):
+		body.queue_free()</code></pre>
+<figure><a href="img/06_codigo.jpg" target="_blank"><img src="img/06_codigo.jpg" alt="Escribe el código" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>¿Lleva la etiqueta?</li><li><span class="num">2</span>La borra</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Ejecuta y prueba</h3>
+<p>Ejecuta con <kbd>F5</kbd> y pulsa <kbd>Espacio</kbd>. Las pelotas caen y desaparecen al tocar el Destructor. Mueve el personaje con <kbd>←</kbd>: pasa por encima y no se borra. (Para ver la zona, activa <b>Depurar → Ver Formas de Colisión</b>.)</p>
+<figure><a href="img/07_juego_destructor.jpg" target="_blank"><img src="img/07_juego_destructor.jpg" alt="Ejecuta y prueba" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Cae…</li><li><span class="num">2</span>…y desaparece</li><li><span class="num">3</span>Sin etiqueta: se queda</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>grupo</b> es una etiqueta para reconocer nodos.</li><li><code>is_in_group("pelotas")</code> pregunta si un cuerpo lleva la etiqueta.</li><li><code>queue_free()</code> lo borra del juego.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Las pelotas no desaparecen.</b> Comprueba que el grupo se llama exactamente <code>pelotas</code> en la escena <code>pelota.tscn</code> (y que la guardaste) y que la señal tiene el icono verde.</li><li><b>También desaparece el personaje.</b> Usa <code>is_in_group("pelotas")</code> y no lo pongas al Personaje en ese grupo.</li><li><b>Puse el grupo a una pelota de la escena principal y las nuevas no lo tienen.</b> El grupo va en <b>pelota.tscn</b>, la plantilla: así lo heredan todas las copias.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Haz que el Destructor sume 1 a un contador cada vez que borra una pelota.</li><li>Crea otro grupo, por ejemplo <code>enemigos</code>, y pon una segunda zona que solo los borre a ellos.</li><li>Mueve el Destructor fuera de la pantalla, debajo del suelo, para que borre lo que se caiga del mundo.</li></ul></section>
+<nav class="navegacion"><a href="../05-crear-pelotas/index.html">← Crear pelotas con preload e instantiate</a><span></span></nav>
+</main>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+</body>
+</html>

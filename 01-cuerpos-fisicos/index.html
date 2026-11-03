@@ -92,7 +92,7 @@
 <section class="caja"><h2>Resumen</h2><ul><li><b>StaticBody2D</b>: lo que no se mueve.</li><li><b>RigidBody2D</b>: lo que cae, choca y se empuja.</li><li>Los dos necesitan siempre un <b>CollisionShape2D</b> con su forma.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>El personaje atraviesa el suelo.</b> Falta un <code>CollisionShape2D</code> o su <b>Shape</b> está vacía (busca el triángulo amarillo).</li><li><b>La imagen y la forma no coinciden.</b> Has movido un hijo en vez del padre. Mueve siempre el cuerpo (Suelo, Personaje) y deja los hijos en <code>0, 0</code>.</li><li><b>Al ejecutar sale una pantalla gris.</b> No hay escena principal o es otra. Revísalo en <b>Proyecto → Configuración del Proyecto → Aplicación → Ejecutar → Escena principal</b>.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia <b>Gravity Scale</b> del personaje a <code>0.2</code> y luego a <code>-1</code>. ¿Qué pasa?</li><li>Gira el suelo con <b>Rotation</b> (por ejemplo <code>10</code>°) para que el personaje ruede.</li><li>Pon al personaje un <b>Physics Material</b> nuevo con <b>Bounce</b> <code>0.6</code> para que rebote.</li></ul></section>
-<nav class="navegacion"><span></span><span></span></nav>
+<nav class="navegacion"><span></span><a href="../02-impulsos/index.html">Mover un RigidBody2D con impulsos →</a></nav>
 </main>
 <footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
 </body>

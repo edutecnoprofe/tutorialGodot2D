@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. Mover un RigidBody2D con impulsos · Godot 2D paso a paso</title>
+<meta name="description" content="Con un script leemos las flechas del teclado y empujamos al personaje con apply_central_impulse: salta y rueda.">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 2</p>
+<h1>Mover un RigidBody2D con impulsos</h1>
+<p class="entrada">Con un script leemos las flechas del teclado y empujamos al personaje con apply_central_impulse: salta y rueda.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, el <b>personaje</b> (RigidBody2D) se moverá con las <b>flechas del teclado</b>: salta con ↑ y rueda con ← y →, siempre respetando la física.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 1: un <b>Suelo</b> (StaticBody2D) y un <b>Personaje</b> (RigidBody2D) que cae sobre él.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos que usamos</h2><div class="conceptos"><div class="concepto"><code>Impulso</code><p>Un <b>empujón</b> instantáneo. A un RigidBody2D no se le cambia la posición: se le empuja y la física decide cómo se mueve.</p></div><div class="concepto"><code>apply_central_impulse()</code><p>Aplica un impulso en el centro del cuerpo. Recibe un <code>Vector2</code>: dirección × fuerza.</p></div><div class="concepto"><code>_process(delta)</code><p>Función que Godot ejecuta en <b>cada fotograma</b> (unas 60 veces por segundo). Ahí miramos el teclado.</p></div><div class="concepto"><code>Input + ui_*</code><p><code>Input.is_action_just_pressed("ui_up")</code> es verdadero solo en el fotograma en que <b>se acaba de pulsar</b> la acción.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Selecciona el Personaje</h3>
+<p>Abre la escena del tutorial anterior y selecciona el nodo <b>Personaje</b> en el panel Escena.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Selecciona el Personaje" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Personaje (RigidBody2D)</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Pulsa «Añadir script»</h3>
+<p>Con Personaje seleccionado, pulsa el botón del <b>pergamino con el signo +</b> que hay arriba del panel Escena.</p>
+<figure><a href="img/02_boton_script.jpg" target="_blank"><img src="img/02_boton_script.jpg" alt="Pulsa «Añadir script»" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Añadir un nuevo script</li><li><span class="num">2</span>Nodo seleccionado</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Crea el script</h3>
+<p>Deja el lenguaje <b>GDScript</b>. Comprueba que <b>Herencia</b> es <code>RigidBody2D</code> y que la ruta es <code>res://personaje.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/03_dialogo_script.jpg" target="_blank"><img src="img/03_dialogo_script.jpg" alt="Crea el script" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de RigidBody2D</li><li><span class="num">2</span>Archivo personaje.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Mira la plantilla</h3>
+<p>Godot abre el editor de scripts con una plantilla. <code>extends RigidBody2D</code> indica qué tipo de nodo controla el script. La función <code>_process(delta)</code> se ejecuta en cada fotograma: ahí comprobaremos el teclado.</p>
+<figure><a href="img/04_plantilla.jpg" target="_blank"><img src="img/04_plantilla.jpg" alt="Mira la plantilla" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>El script controla un RigidBody2D</li><li><span class="num">2</span>Se ejecuta en cada fotograma</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Escribe el código de los impulsos</h3>
+<p>Sustituye la plantilla por este código y guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd>. <code>@export</code> hace que la variable <code>fuerza</code> aparezca en el Inspector. Cada <code>if</code> mira si <b>se acaba de pulsar</b> una flecha y empuja al personaje en esa dirección: <code>Vector2.UP * fuerza</code> es un vector hacia arriba de 400 de largo.</p><pre class="codigo"><code>extends RigidBody2D
+
+@export var fuerza = 400
+
+
+func _process(delta: float) -&gt; void:
+	if Input.is_action_just_pressed(&quot;ui_up&quot;):
+		apply_central_impulse(Vector2.UP * fuerza)
+	if Input.is_action_just_pressed(&quot;ui_down&quot;):
+		apply_central_impulse(Vector2.DOWN * fuerza)
+	if Input.is_action_just_pressed(&quot;ui_left&quot;):
+		apply_central_impulse(Vector2.LEFT * fuerza)
+	if Input.is_action_just_pressed(&quot;ui_right&quot;):
+		apply_central_impulse(Vector2.RIGHT * fuerza)</code></pre>
+<figure><a href="img/05_codigo.jpg" target="_blank"><img src="img/05_codigo.jpg" alt="Escribe el código de los impulsos" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Variable fuerza, visible en el Inspector</li><li><span class="num">2</span>Si se pulsa ↑, impulso hacia arriba</li><li><span class="num">3</span>Las cuatro direcciones</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>¿De dónde salen ui_up y compañía?</h3>
+<p>Son <b>acciones</b> que Godot trae de serie. Las ves en <b>Proyecto → Configuración del Proyecto → Mapa de Entrada</b>, activando <b>Mostrar Acciones Integradas</b>. <code>ui_up</code> es la flecha arriba (y la cruceta o el joystick de un mando).</p>
+<figure><a href="img/06_mapa_entrada.jpg" target="_blank"><img src="img/06_mapa_entrada.jpg" alt="¿De dónde salen ui_up y compañía?" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Mapa de Entrada</li><li><span class="num">2</span>Mostrar Acciones Integradas</li><li><span class="num">3</span>ui_up: tecla ↑ y mando</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Ajusta la fuerza en el Inspector</h3>
+<p>Vuelve a la vista <b>2D</b>. Personaje tiene ahora el icono de script y en el Inspector aparece <b>Fuerza</b>. Puedes cambiar su valor ahí sin tocar el código.</p>
+<figure><a href="img/07_inspector_fuerza.jpg" target="_blank"><img src="img/07_inspector_fuerza.jpg" alt="Ajusta la fuerza en el Inspector" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Personaje tiene script</li><li><span class="num">2</span>Fuerza: 400</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Ejecuta y salta</h3>
+<p>Ejecuta con <kbd>F5</kbd> y pulsa <kbd>↑</kbd>: el personaje recibe un impulso hacia arriba y salta. (En la captura el juego está en pausa con <kbd>F7</kbd> para verlo en el aire).</p>
+<figure><a href="img/08_salto.jpg" target="_blank"><img src="img/08_salto.jpg" alt="Ejecuta y salta" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>En el aire tras el impulso</li><li><span class="num">2</span>Pausa (F7)</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Rueda a los lados</h3>
+<p>Pulsa <kbd>←</kbd> o <kbd>→</kbd>: el personaje sale <b>rodando</b>. Es un cuerpo redondo y el roce con el suelo lo hace girar: eso lo calcula la física, no nuestro código.</p>
+<figure><a href="img/09_lateral.jpg" target="_blank"><img src="img/09_lateral.jpg" alt="Rueda a los lados" loading="lazy"></a>
+<figcaption><ol class="marcas"><li><span class="num">1</span>Rueda y gira</li><li><span class="num">2</span>El roce con el suelo lo hace girar</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>A un <b>RigidBody2D</b> no se le cambia la posición: se le dan <b>impulsos</b> con <code>apply_central_impulse()</code>.</li><li>Las teclas se leen con <code>Input</code> y las <b>acciones</b> del Mapa de Entrada (<code>ui_up</code>, <code>ui_left</code>…).</li><li>Con <code>@export</code> ajustas la fuerza desde el Inspector.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>No pasa nada al pulsar las flechas.</b> Comprueba que el script está en <b>Personaje</b> (icono de pergamino) y que lo has guardado. Haz clic en la ventana del juego para que tenga el foco.</li><li><b>Error «Invalid call... apply_central_impulse».</b> El script no hereda de <code>RigidBody2D</code> o está puesto en otro nodo. La primera línea debe ser <code>extends RigidBody2D</code>.</li><li><b>Sale disparado fuera de la pantalla.</b> La fuerza es muy grande. Bájala en el Inspector (prueba 200 o 300).</li><li><b>Aparece un aviso amarillo sobre «delta».</b> Solo avisa de que no usamos ese parámetro. No es un error; si quieres quitarlo, llámalo <code>_delta</code>.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia <b>Fuerza</b> en el Inspector a <code>200</code> y luego a <code>800</code>. ¿Cuál se controla mejor?</li><li>Haz que el salto sea más fuerte que el movimiento lateral: usa <code>fuerza * 2</code> solo en <code>ui_up</code>.</li><li>Prueba <code>is_action_pressed</code> en vez de <code>is_action_just_pressed</code> en las flechas laterales. ¿Qué cambia?</li></ul></section>
+<nav class="navegacion"><a href="../01-cuerpos-fisicos/index.html">← Cuerpos físicos: StaticBody2D y RigidBody2D</a><span></span></nav>
+</main>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+</body>
+</html>

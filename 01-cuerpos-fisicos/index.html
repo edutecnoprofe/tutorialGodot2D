@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1. Cuerpos físicos: StaticBody2D y RigidBody2D · Godot 2D paso a paso</title>
+<title>Tutorial 1. Cuerpos físicos: StaticBody2D y RigidBody2D · Godot 2D paso a paso</title>
 <meta name="description" content="Creamos un suelo que no se mueve y un personaje que cae por la gravedad y se queda apoyado sobre él.">
 <link rel="stylesheet" href="../estilo.css">
 </head>
 <body>
 <header class="cabecera">
-<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 1</p>
+<p class="serie"><a href="../index.html">Inicio</a> · <a href="../videojuego2d.html">Godot 2D paso a paso</a> · Tutorial 1</p>
 <h1>Cuerpos físicos: StaticBody2D y RigidBody2D</h1>
 <p class="entrada">Creamos un suelo que no se mueve y un personaje que cae por la gravedad y se queda apoyado sobre él.</p>
 </header>
@@ -21,79 +21,65 @@
 <section><h2>Paso a paso</h2><section class="paso" id="paso-1">
 <h3><span class="paso-n">1</span>Crea una escena 2D</h3>
 <p>En el panel <b>Escena</b>, pulsa <b>Escena 2D</b>. Se crea el nodo raíz de la escena, un <code>Node2D</code>, y el editor cambia a la vista 2D.</p>
-<figure><a href="img/01_proyecto_vacio.jpg" target="_blank"><img src="img/01_proyecto_vacio.jpg" alt="Crea una escena 2D" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Botón «Escena 2D»</li></ol></figcaption></figure>
+<figure><a href="img/01_proyecto_vacio.jpg" target="_blank"><img src="img/01_proyecto_vacio.jpg" alt="Crea una escena 2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Botón «Escena 2D»</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-2">
 <h3><span class="paso-n">2</span>Guarda la escena</h3>
 <p>Pulsa <kbd>Ctrl</kbd>+<kbd>S</kbd>. Deja el nombre que propone, <code>node_2d.tscn</code>, y pulsa <b>Guardar</b>.</p>
-<figure><a href="img/02_guardar_escena.jpg" target="_blank"><img src="img/02_guardar_escena.jpg" alt="Guarda la escena" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Nombre del archivo de la escena</li><li><span class="num">2</span>Guardar</li></ol></figcaption></figure>
+<figure><a href="img/02_guardar_escena.jpg" target="_blank"><img src="img/02_guardar_escena.jpg" alt="Guarda la escena" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Nombre del archivo de la escena</li><li><span class="num">2</span>Guardar</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-3">
 <h3><span class="paso-n">3</span>Añade un StaticBody2D para el suelo</h3>
 <p>Con el <code>Node2D</code> seleccionado, pulsa el botón <b>+</b> del panel Escena (o <kbd>Ctrl</kbd>+<kbd>A</kbd>). Escribe <code>StaticBody2D</code>, elígelo y pulsa <b>Crear</b>. Después cámbiale el nombre a <b>Suelo</b>: selecciónalo y pulsa <kbd>F2</kbd> (o haz doble clic en el nombre).</p>
-<figure><a href="img/03_crear_staticbody.jpg" target="_blank"><img src="img/03_crear_staticbody.jpg" alt="Añade un StaticBody2D para el suelo" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Busca el tipo de nodo</li><li><span class="num">2</span>La descripción: no lo mueven fuerzas externas</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+<figure><a href="img/03_crear_staticbody.jpg" target="_blank"><img src="img/03_crear_staticbody.jpg" alt="Añade un StaticBody2D para el suelo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Busca el tipo de nodo</li><li><span class="num">2</span>La descripción: no lo mueven fuerzas externas</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-4">
 <h3><span class="paso-n">4</span>Lee el aviso: falta la forma</h3>
 <p>Aparece un <b>triángulo amarillo</b> junto a Suelo. Si pasas el ratón por encima, Godot explica que el nodo <b>no tiene forma</b> y por tanto no puede chocar con nada. Lo arreglamos en el paso siguiente.</p>
-<figure><a href="img/04_aviso_forma.jpg" target="_blank"><img src="img/04_aviso_forma.jpg" alt="Lee el aviso: falta la forma" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Aviso de configuración</li><li><span class="num">2</span>Necesita un CollisionShape2D hijo</li></ol></figcaption></figure>
+<figure><a href="img/04_aviso_forma.jpg" target="_blank"><img src="img/04_aviso_forma.jpg" alt="Lee el aviso: falta la forma" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Aviso de configuración</li><li><span class="num">2</span>Necesita un CollisionShape2D hijo</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-5">
 <h3><span class="paso-n">5</span>Añade la forma de colisión</h3>
 <p>Con <b>Suelo</b> seleccionado, añade un hijo <code>CollisionShape2D</code> (botón <b>+</b>). En el <b>Inspector</b>, abre el desplegable de <b>Shape</b> y elige <b>Nuevo RectangleShape2D</b>.</p>
-<figure><a href="img/05_elegir_forma.jpg" target="_blank"><img src="img/05_elegir_forma.jpg" alt="Añade la forma de colisión" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>CollisionShape2D, hijo de Suelo</li><li><span class="num">2</span>RectangleShape2D</li></ol></figcaption></figure>
+<figure><a href="img/05_elegir_forma.jpg" target="_blank"><img src="img/05_elegir_forma.jpg" alt="Añade la forma de colisión" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>CollisionShape2D, hijo de Suelo</li><li><span class="num">2</span>RectangleShape2D</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-6">
 <h3><span class="paso-n">6</span>Dale tamaño a la forma</h3>
 <p>Pulsa sobre el recurso <b>RectangleShape2D</b> para desplegarlo y escribe en <b>Size</b>: <code>x = 1000</code>, <code>y = 60</code>. También puedes arrastrar los puntos rojos en el visor.</p>
-<figure><a href="img/06_tamano_forma.jpg" target="_blank"><img src="img/06_tamano_forma.jpg" alt="Dale tamaño a la forma" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Size: 1000 × 60 píxeles</li><li><span class="num">2</span>La forma en el visor</li></ol></figcaption></figure>
+<figure><a href="img/06_tamano_forma.jpg" target="_blank"><img src="img/06_tamano_forma.jpg" alt="Dale tamaño a la forma" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Size: 1000 × 60 píxeles</li><li><span class="num">2</span>La forma en el visor</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-7">
 <h3><span class="paso-n">7</span>Coloca el suelo abajo</h3>
 <p>Selecciona <b>Suelo</b> (el padre, no la forma). En el Inspector, despliega <b>Transform</b> y escribe en <b>Position</b>: <code>x = 576</code>, <code>y = 600</code>. Al mover el padre, todos sus hijos se mueven con él.</p>
-<figure><a href="img/07_posicion_suelo.jpg" target="_blank"><img src="img/07_posicion_suelo.jpg" alt="Coloca el suelo abajo" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Position: 576, 600</li><li><span class="num">2</span>El suelo, en la parte baja de la pantalla del juego</li></ol></figcaption></figure>
+<figure><a href="img/07_posicion_suelo.jpg" target="_blank"><img src="img/07_posicion_suelo.jpg" alt="Coloca el suelo abajo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Position: 576, 600</li><li><span class="num">2</span>El suelo, en la parte baja de la pantalla del juego</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-8">
 <h3><span class="paso-n">8</span>Dale una imagen al suelo</h3>
 <p>La forma de colisión no se ve al jugar. Añade a <b>Suelo</b> un hijo <code>Sprite2D</code> y arrastra <code>icon.svg</code> desde el <b>Sistema de Archivos</b> hasta su propiedad <b>Texture</b>.</p>
-<figure><a href="img/08_textura_suelo.jpg" target="_blank"><img src="img/08_textura_suelo.jpg" alt="Dale una imagen al suelo" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Sprite2D, hijo de Suelo</li><li><span class="num">2</span>Arrastra icon.svg…</li><li><span class="num">3</span>…hasta Texture</li></ol></figcaption></figure>
+<figure><a href="img/08_textura_suelo.jpg" target="_blank"><img src="img/08_textura_suelo.jpg" alt="Dale una imagen al suelo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Sprite2D, hijo de Suelo</li><li><span class="num">2</span>Arrastra icon.svg…</li><li><span class="num">3</span>…hasta Texture</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-9">
 <h3><span class="paso-n">9</span>Estira la imagen</h3>
 <p>El icono mide 128 × 128 píxeles. En <b>Transform → Scale</b>, pulsa el icono de la cadena para poder cambiar x e y por separado y escribe <code>x = 7.813</code> (1000 ÷ 128) e <code>y = 0.469</code> (60 ÷ 128). Ahora imagen y forma coinciden.</p>
-<figure><a href="img/09_escala_suelo.jpg" target="_blank"><img src="img/09_escala_suelo.jpg" alt="Estira la imagen" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Scale: 7.813 × 0.469</li><li><span class="num">2</span>Imagen del tamaño de la forma</li></ol></figcaption></figure>
+<figure><a href="img/09_escala_suelo.jpg" target="_blank"><img src="img/09_escala_suelo.jpg" alt="Estira la imagen" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Scale: 7.813 × 0.469</li><li><span class="num">2</span>Imagen del tamaño de la forma</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-10">
 <h3><span class="paso-n">10</span>Crea el personaje con un RigidBody2D</h3>
 <p>Selecciona <code>Node2D</code> y añade un hijo <code>RigidBody2D</code>. Cámbiale el nombre a <b>Personaje</b>. Este cuerpo sí se mueve: lo controla la simulación física.</p>
-<figure><a href="img/10_crear_rigidbody.jpg" target="_blank"><img src="img/10_crear_rigidbody.jpg" alt="Crea el personaje con un RigidBody2D" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>RigidBody2D</li><li><span class="num">2</span>Se mueve mediante una simulación física</li></ol></figcaption></figure>
+<figure><a href="img/10_crear_rigidbody.jpg" target="_blank"><img src="img/10_crear_rigidbody.jpg" alt="Crea el personaje con un RigidBody2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>RigidBody2D</li><li><span class="num">2</span>Se mueve mediante una simulación física</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-11">
 <h3><span class="paso-n">11</span>Forma e imagen del personaje</h3>
 <p>Igual que el suelo, el personaje necesita su forma: añade a <b>Personaje</b> un <code>CollisionShape2D</code> con <b>Nuevo CircleShape2D</b> y ponle <b>Radius</b> <code>64</code>. Después añade un <code>Sprite2D</code> con <code>icon.svg</code> en Texture.</p>
-<figure><a href="img/11_forma_circulo.jpg" target="_blank"><img src="img/11_forma_circulo.jpg" alt="Forma e imagen del personaje" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Hijos de Personaje</li><li><span class="num">2</span>CircleShape2D</li></ol></figcaption></figure>
+<figure><a href="img/11_forma_circulo.jpg" target="_blank"><img src="img/11_forma_circulo.jpg" alt="Forma e imagen del personaje" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Hijos de Personaje</li><li><span class="num">2</span>CircleShape2D</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-12">
 <h3><span class="paso-n">12</span>Coloca el personaje arriba</h3>
 <p>Selecciona <b>Personaje</b> y pon en <b>Position</b> <code>x = 576</code>, <code>y = 150</code>. Arriba del Inspector están sus propiedades físicas: <b>Mass</b> (masa) y <b>Gravity Scale</b> (cuánto le afecta la gravedad).</p>
-<figure><a href="img/12_personaje.jpg" target="_blank"><img src="img/12_personaje.jpg" alt="Coloca el personaje arriba" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Position: 576, 150</li><li><span class="num">2</span>Masa y escala de gravedad</li><li><span class="num">3</span>La escena completa</li></ol></figcaption></figure>
+<figure><a href="img/12_personaje.jpg" target="_blank"><img src="img/12_personaje.jpg" alt="Coloca el personaje arriba" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Position: 576, 150</li><li><span class="num">2</span>Masa y escala de gravedad</li><li><span class="num">3</span>La escena completa</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-13">
 <h3><span class="paso-n">13</span>Ejecuta el juego</h3>
 <p>Pulsa el botón <b>Ejecutar proyecto</b> (<kbd>F5</kbd>). La primera vez Godot pregunta cuál es la escena principal: pulsa <b>Seleccionar actual</b>.</p>
-<figure><a href="img/13_escena_principal.jpg" target="_blank"><img src="img/13_escena_principal.jpg" alt="Ejecuta el juego" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Ejecutar proyecto (F5)</li><li><span class="num">2</span>Seleccionar actual</li></ol></figcaption></figure>
+<figure><a href="img/13_escena_principal.jpg" target="_blank"><img src="img/13_escena_principal.jpg" alt="Ejecuta el juego" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Ejecutar proyecto (F5)</li><li><span class="num">2</span>Seleccionar actual</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-14">
 <h3><span class="paso-n">14</span>¡Funciona!</h3>
 <p>El personaje cae por la gravedad y se queda <b>apoyado sobre el suelo</b>: el RigidBody2D choca con el StaticBody2D gracias a sus formas de colisión.</p>
-<figure><a href="img/14_juego.jpg" target="_blank"><img src="img/14_juego.jpg" alt="¡Funciona!" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Personaje (RigidBody2D)</li><li><span class="num">2</span>Suelo (StaticBody2D)</li></ol></figcaption></figure>
+<figure><a href="img/14_juego.jpg" target="_blank"><img src="img/14_juego.jpg" alt="¡Funciona!" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Personaje (RigidBody2D)</li><li><span class="num">2</span>Suelo (StaticBody2D)</li></ol></figcaption></figure>
 </section></section>
 <section class="caja"><h2>Resumen</h2><ul><li><b>StaticBody2D</b>: lo que no se mueve.</li><li><b>RigidBody2D</b>: lo que cae, choca y se empuja.</li><li>Los dos necesitan siempre un <b>CollisionShape2D</b> con su forma.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>El personaje atraviesa el suelo.</b> Falta un <code>CollisionShape2D</code> o su <b>Shape</b> está vacía (busca el triángulo amarillo).</li><li><b>La imagen y la forma no coinciden.</b> Has movido un hijo en vez del padre. Mueve siempre el cuerpo (Suelo, Personaje) y deja los hijos en <code>0, 0</code>.</li><li><b>Al ejecutar sale una pantalla gris.</b> No hay escena principal o es otra. Revísalo en <b>Proyecto → Configuración del Proyecto → Aplicación → Ejecutar → Escena principal</b>.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia <b>Gravity Scale</b> del personaje a <code>0.2</code> y luego a <code>-1</code>. ¿Qué pasa?</li><li>Gira el suelo con <b>Rotation</b> (por ejemplo <code>10</code>°) para que el personaje ruede.</li><li>Pon al personaje un <b>Physics Material</b> nuevo con <b>Bounce</b> <code>0.6</code> para que rebote.</li></ul></section>
 <nav class="navegacion"><span></span><a href="../02-impulsos/index.html">Mover un RigidBody2D con impulsos →</a></nav>
 </main>
-<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../videojuego2d.html">Todos los tutoriales de la serie</a> · <a href="../index.html">Inicio</a></p></footer>
 </body>
 </html>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>3. Area2D y señales: un contador · Godot 2D paso a paso</title>
+<title>Tutorial 3. Area2D y señales: un contador · Godot 2D paso a paso</title>
 <meta name="description" content="Una zona invisible (Area2D) detecta cuándo entra el personaje y, con la señal body_entered, suma 1 a un contador en pantalla.">
 <link rel="stylesheet" href="../estilo.css">
 </head>
 <body>
 <header class="cabecera">
-<p class="serie"><a href="../index.html">Godot 2D paso a paso</a> · Tutorial 3</p>
+<p class="serie"><a href="../index.html">Inicio</a> · <a href="../videojuego2d.html">Godot 2D paso a paso</a> · Tutorial 3</p>
 <h1>Area2D y señales: un contador</h1>
 <p class="entrada">Una zona invisible (Area2D) detecta cuándo entra el personaje y, con la señal body_entered, suma 1 a un contador en pantalla.</p>
 </header>
@@ -21,48 +21,39 @@
 <section><h2>Paso a paso</h2><section class="paso" id="paso-1">
 <h3><span class="paso-n">1</span>Selecciona el Node2D</h3>
 <p>Abre la escena del tutorial anterior y selecciona el nodo raíz <code>Node2D</code>.</p>
-<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Selecciona el Node2D" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Nodo raíz</li></ol></figcaption></figure>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Selecciona el Node2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Nodo raíz</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-2">
 <h3><span class="paso-n">2</span>Añade un Area2D</h3>
 <p>Pulsa <b>+</b>, busca <code>Area2D</code> y pulsa <b>Crear</b>. Cámbiale el nombre a <b>Zona</b> (<kbd>F2</kbd>).</p>
-<figure><a href="img/02_crear_area.jpg" target="_blank"><img src="img/02_crear_area.jpg" alt="Añade un Area2D" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Busca Area2D</li><li><span class="num">2</span>Detecta cuerpos que entran o salen</li></ol></figcaption></figure>
+<figure><a href="img/02_crear_area.jpg" target="_blank"><img src="img/02_crear_area.jpg" alt="Añade un Area2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Busca Area2D</li><li><span class="num">2</span>Detecta cuerpos que entran o salen</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-3">
 <h3><span class="paso-n">3</span>Dale forma y colócala</h3>
 <p>Añade a Zona un <code>CollisionShape2D</code> con un <b>RectangleShape2D</b> de <code>200 × 200</code>. Selecciona <b>Zona</b> y pon <b>Position</b> <code>x = 850</code>, <code>y = 480</code>: queda sobre el suelo, a la derecha. Truco: escribe <code>position</code> en <b>Filtrar Propiedades</b> para encontrarla rápido.</p>
-<figure><a href="img/03_zona_colocada.jpg" target="_blank"><img src="img/03_zona_colocada.jpg" alt="Dale forma y colócala" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Zona y su forma</li><li><span class="num">2</span>Position: 850, 480</li><li><span class="num">3</span>La zona en el visor</li></ol></figcaption></figure>
+<figure><a href="img/03_zona_colocada.jpg" target="_blank"><img src="img/03_zona_colocada.jpg" alt="Dale forma y colócala" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Zona y su forma</li><li><span class="num">2</span>Position: 850, 480</li><li><span class="num">3</span>La zona en el visor</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-4">
 <h3><span class="paso-n">4</span>Añade un Label para el contador</h3>
 <p>Con <b>Zona</b> seleccionada, añade un hijo <code>Label</code> y llámalo <b>Contador</b>.</p>
-<figure><a href="img/04_crear_label.jpg" target="_blank"><img src="img/04_crear_label.jpg" alt="Añade un Label para el contador" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Busca Label</li><li><span class="num">2</span>Label</li></ol></figcaption></figure>
+<figure><a href="img/04_crear_label.jpg" target="_blank"><img src="img/04_crear_label.jpg" alt="Añade un Label para el contador" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Busca Label</li><li><span class="num">2</span>Label</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-5">
 <h3><span class="paso-n">5</span>Prepara el texto</h3>
 <p>En el Inspector, escribe <code>0</code> en <b>Text</b>. Para que se vea grande: <b>Theme Overrides → Font Sizes → Font Size</b>, activa la casilla y pon <code>64</code>. En <b>Layout → Transform → Position</b> pon <code>x = -20</code>, <code>y = -190</code> para colocarlo encima de la zona.</p>
-<figure><a href="img/05_label.jpg" target="_blank"><img src="img/05_label.jpg" alt="Prepara el texto" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Contador, hijo de Zona</li><li><span class="num">2</span>Text: 0</li><li><span class="num">3</span>El 0 encima de la zona</li></ol></figcaption></figure>
+<figure><a href="img/05_label.jpg" target="_blank"><img src="img/05_label.jpg" alt="Prepara el texto" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Contador, hijo de Zona</li><li><span class="num">2</span>Text: 0</li><li><span class="num">3</span>El 0 encima de la zona</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-6">
 <h3><span class="paso-n">6</span>Añade un script a la Zona</h3>
 <p>Selecciona <b>Zona</b> y pulsa el botón de <b>añadir script</b>. Hereda de <code>Area2D</code> y se guarda como <code>res://zona.gd</code>. Pulsa <b>Crear</b>.</p>
-<figure><a href="img/06_script_zona.jpg" target="_blank"><img src="img/06_script_zona.jpg" alt="Añade un script a la Zona" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Area2D</li><li><span class="num">2</span>zona.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+<figure><a href="img/06_script_zona.jpg" target="_blank"><img src="img/06_script_zona.jpg" alt="Añade un script a la Zona" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Area2D</li><li><span class="num">2</span>zona.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-7">
 <h3><span class="paso-n">7</span>Busca la señal body_entered</h3>
 <p>Con Zona seleccionada, abre la pestaña <b>Señales</b> (junto al Inspector). Ahí están todos los avisos que puede lanzar un Area2D. Nos interesa <code>body_entered</code>: «ha entrado un cuerpo».</p>
-<figure><a href="img/07_senales.jpg" target="_blank"><img src="img/07_senales.jpg" alt="Busca la señal body_entered" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Pestaña Señales</li><li><span class="num">2</span>body_entered(body)</li></ol></figcaption></figure>
+<figure><a href="img/07_senales.jpg" target="_blank"><img src="img/07_senales.jpg" alt="Busca la señal body_entered" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Pestaña Señales</li><li><span class="num">2</span>body_entered(body)</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-8">
 <h3><span class="paso-n">8</span>Conecta la señal</h3>
 <p>Haz <b>doble clic</b> en <code>body_entered</code>. En el diálogo elige <b>Zona</b> como receptor (el nodo cuyo script recibirá el aviso). El método se llamará <code>_on_body_entered</code>. Pulsa <b>Conectar</b>.</p>
-<figure><a href="img/08_conectar.jpg" target="_blank"><img src="img/08_conectar.jpg" alt="Conecta la señal" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Receptor: Zona</li><li><span class="num">2</span>Nombre de la función</li><li><span class="num">3</span>Conectar</li></ol></figcaption></figure>
+<figure><a href="img/08_conectar.jpg" target="_blank"><img src="img/08_conectar.jpg" alt="Conecta la señal" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Receptor: Zona</li><li><span class="num">2</span>Nombre de la función</li><li><span class="num">3</span>Conectar</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-9">
 <h3><span class="paso-n">9</span>Godot crea la función</h3>
 <p>En el script aparece <code>func _on_body_entered(body)</code> con un <b>icono verde</b>: está conectada. Se ejecutará sola cada vez que un cuerpo entre en la zona.</p>
-<figure><a href="img/09_funcion_creada.jpg" target="_blank"><img src="img/09_funcion_creada.jpg" alt="Godot crea la función" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Función conectada (icono verde)</li><li><span class="num">2</span>La conexión en la lista de señales</li></ol></figcaption></figure>
+<figure><a href="img/09_funcion_creada.jpg" target="_blank"><img src="img/09_funcion_creada.jpg" alt="Godot crea la función" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Función conectada (icono verde)</li><li><span class="num">2</span>La conexión en la lista de señales</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-10">
 <h3><span class="paso-n">10</span>Escribe el código del contador</h3>
 <p>Sustituye el script por este código y guarda. Comprobamos que el cuerpo es un <code>RigidBody2D</code> porque <b>el suelo también es un cuerpo</b> y toca la zona: sin esa comprobación también lo contaría. <code>$Contador</code> es el Label hijo y <code>str()</code> convierte el número en texto.</p><pre class="codigo"><code>extends Area2D
@@ -74,24 +65,21 @@ func _on_body_entered(body: Node2D) -&gt; void:
 	if body is RigidBody2D:
 		contador = contador + 1
 		$Contador.text = str(contador)</code></pre>
-<figure><a href="img/10_codigo.jpg" target="_blank"><img src="img/10_codigo.jpg" alt="Escribe el código del contador" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>El contador empieza en 0</li><li><span class="num">2</span>¿Es un RigidBody2D?</li><li><span class="num">3</span>Suma 1</li><li><span class="num">4</span>Lo escribe en el Label</li></ol></figcaption></figure>
+<figure><a href="img/10_codigo.jpg" target="_blank"><img src="img/10_codigo.jpg" alt="Escribe el código del contador" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El contador empieza en 0</li><li><span class="num">2</span>¿Es un RigidBody2D?</li><li><span class="num">3</span>Suma 1</li><li><span class="num">4</span>Lo escribe en el Label</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-11">
 <h3><span class="paso-n">11</span>Truco: ver las formas al jugar</h3>
 <p>En el menú <b>Depurar</b>, activa <b>Ver Formas de Colisión</b>. Así verás la zona (y las demás formas) mientras juegas.</p>
-<figure><a href="img/11_ver_formas.jpg" target="_blank"><img src="img/11_ver_formas.jpg" alt="Truco: ver las formas al jugar" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>Ver Formas de Colisión</li></ol></figcaption></figure>
+<figure><a href="img/11_ver_formas.jpg" target="_blank"><img src="img/11_ver_formas.jpg" alt="Truco: ver las formas al jugar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Ver Formas de Colisión</li></ol></figcaption></figure>
 </section><section class="paso" id="paso-12">
 <h3><span class="paso-n">12</span>Ejecuta y entra en la zona</h3>
 <p>Ejecuta con <kbd>F5</kbd> y pulsa <kbd>→</kbd>. Cuando el personaje entra en la zona, la señal salta y el contador pasa a <b>1</b>. Vuelve con <kbd>←</kbd> y entra otra vez: 2, 3…</p>
-<figure><a href="img/12_juego_contador.jpg" target="_blank"><img src="img/12_juego_contador.jpg" alt="Ejecuta y entra en la zona" loading="lazy"></a>
-<figcaption><ol class="marcas"><li><span class="num">1</span>El personaje entra</li><li><span class="num">2</span>El contador sube</li><li><span class="num">3</span>La zona, visible al depurar</li></ol></figcaption></figure>
+<figure><a href="img/12_juego_contador.jpg" target="_blank"><img src="img/12_juego_contador.jpg" alt="Ejecuta y entra en la zona" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El personaje entra</li><li><span class="num">2</span>El contador sube</li><li><span class="num">3</span>La zona, visible al depurar</li></ol></figcaption></figure>
 </section></section>
 <section class="caja"><h2>Resumen</h2><ul><li>Un <b>Area2D</b> detecta los cuerpos que entran en su forma (no choca con ellos).</li><li>Avisa con la <b>señal</b> <code>body_entered</code>, que se conecta a una función del script.</li><li>Comprueba siempre <b>qué</b> ha entrado (<code>body is RigidBody2D</code>) antes de reaccionar.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>El contador no cambia.</b> Mira si la función tiene el <b>icono verde</b>. Si no, la señal no está conectada: vuelve a la pestaña Señales y conéctala a Zona.</li><li><b>Error «Node not found: Contador».</b> El Label debe ser <b>hijo de Zona</b> y llamarse exactamente <code>Contador</code> (mayúsculas incluidas).</li><li><b>El contador empieza en 1 sin tocar nada.</b> Falta <code>if body is RigidBody2D:</code> y está contando el suelo.</li><li><b>Cambié el nombre de la función y dejó de funcionar.</b> La conexión guarda el nombre <code>_on_body_entered</code>. Si lo cambias, reconecta la señal.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Añade la señal <code>body_exited</code> y haz que el contador muestre «fuera» cuando el personaje sale.</li><li>Mueve la zona a la izquierda y ponle otra más: ¿cada una lleva su propio contador?</li><li>Cambia el texto para que muestre <code>"Entradas: " + str(contador)</code>.</li></ul></section>
 <nav class="navegacion"><a href="../02-impulsos/index.html">← Mover un RigidBody2D con impulsos</a><a href="../04-muelle-animado/index.html">Un muelle con Area2D y AnimatedSprite2D →</a></nav>
 </main>
-<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../index.html">Todos los tutoriales</a></p></footer>
+<footer class="pie"><p>Godot 2D paso a paso · Godot 4.6 · <a href="../videojuego2d.html">Todos los tutoriales de la serie</a> · <a href="../index.html">Inicio</a></p></footer>
 </body>
 </html>

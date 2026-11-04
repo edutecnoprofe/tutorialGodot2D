@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica 1. Laboratorio de diccionarios · Teoría de programación: diccionarios</title>
+<meta name="description" content="Una interfaz con botones para probar las operaciones de un diccionario: añadir, buscar, borrar, ver claves, valores, tamaño y vaciar.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body class="prog">
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 1</p>
+<h1>Laboratorio de diccionarios</h1>
+<p class="entrada">Una interfaz con botones para probar las operaciones de un diccionario: añadir, buscar, borrar, ver claves, valores, tamaño y vaciar.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás un <b>laboratorio</b> donde escribes una clave y un valor (por ejemplo, país y capital) y pruebas con botones cada función del diccionario, viendo siempre su contenido.</p><p class="partimos"><b>Partimos de:</b> Un proyecto vacío de Godot 4.6. Es la misma idea que el laboratorio de arrays.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y funciones</h2><div class="conceptos"><div class="concepto"><code>LineEdit</code><p>Campo de texto de <b>una línea</b>. Su texto está en <code>.text</code>.</p></div><div class="concepto"><code>Button + pressed</code><p>La señal <b>pressed</b> avisa cuando se pulsa el botón.</p></div><div class="concepto"><code>has() / erase()</code><p><b>Comprueba</b> si existe una clave / la <b>borra</b> (devuelve true si estaba).</p></div><div class="concepto"><code>keys() / values() / size() / clear()</code><p>Claves, valores, número de parejas y <b>vaciar</b>.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Crea la interfaz</h3>
+<p>Crea una escena nueva con un nodo <code>Control</code> llamado <b>Laboratorio</b>. Dentro, arrastra: un <code>Label</code> Titulo, dos <code>LineEdit</code> (<b>Clave</b> y <b>Valor</b>), siete <code>Button</code> (<b>Anadir, Buscar, Borrar, Claves, Valores, Tamano, Vaciar</b>; el texto visible puede llevar ñ: «Añadir», «Tamaño») y dos <code>Label</code>: <b>Resultado</b> y <b>Contenido</b>. Guarda como <code>laboratorio.tscn</code>.</p>
+<figure><a href="img/01_interfaz.jpg" target="_blank"><img src="img/01_interfaz.jpg" alt="Crea la interfaz" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Los nodos (nombres sin ñ)</li><li><span class="num">2</span>Clave y Valor</li><li><span class="num">3</span>Siete botones</li><li><span class="num">4</span>Resultado</li><li><span class="num">5</span>Contenido</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Texto de ayuda en los LineEdit</h3>
+<p>Usamos <code>LineEdit</code> y no <code>TextEdit</code> porque solo necesitamos una línea. Selecciona <b>Clave</b> y en el inspector escribe <code>clave</code> en <b>Placeholder Text</b>; haz lo mismo con <b>Valor</b>. Es el texto gris que se ve cuando el campo está vacío.</p>
+<figure><a href="img/02_placeholder.jpg" target="_blank"><img src="img/02_placeholder.jpg" alt="Texto de ayuda en los LineEdit" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Clave</li><li><span class="num">2</span>Placeholder Text</li><li><span class="num">3</span>Texto gris</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Añade el script</h3>
+<p>Selecciona <b>Laboratorio</b> y pulsa <b>añadir script</b>. Hereda de <code>Control</code> y se guarda como <code>res://laboratorio.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/03_script.jpg" target="_blank"><img src="img/03_script.jpg" alt="Añade el script" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de Control</li><li><span class="num">2</span>laboratorio.gd</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Conecta los botones</h3>
+<p>Selecciona <b>Anadir</b>, abre la pestaña <b>Señales</b> y haz doble clic en <code>pressed()</code>. El receptor es <b>Laboratorio</b> y el método, <code>_on_anadir_pressed</code>. Pulsa <b>Conectar</b>. Repite con los otros seis botones.</p>
+<figure><a href="img/04_conectar.jpg" target="_blank"><img src="img/04_conectar.jpg" alt="Conecta los botones" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>pressed()</li><li><span class="num">2</span>Receptor: Laboratorio</li><li><span class="num">3</span>_on_anadir_pressed</li><li><span class="num">4</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>El diccionario, los nodos y Añadir</h3>
+<p>Creamos el diccionario vacío y <b>tipado</b> (claves y valores <code>String</code>) y guardamos los nodos con <code>@onready</code>. <code>mostrar()</code> escribe el diccionario entero en Contenido. Añadir es una línea: si la clave es nueva se <b>añade</b>; si ya existía, se <b>cambia</b>.</p><pre class="codigo"><code>extends Control
+
+var datos: Dictionary[String, String] = {}
+
+@onready var clave: LineEdit = $Clave
+@onready var valor: LineEdit = $Valor
+@onready var resultado: Label = $Resultado
+@onready var contenido: Label = $Contenido
+
+
+func mostrar() -&gt; void:
+	contenido.text = str(datos)
+
+
+func _on_anadir_pressed() -&gt; void:
+	datos[clave.text] = valor.text
+	resultado.text = &quot;Guardado: &quot; + clave.text
+	mostrar()</code></pre>
+<figure><a href="img/05_codigo_a.jpg" target="_blank"><img src="img/05_codigo_a.jpg" alt="El diccionario, los nodos y Añadir" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Diccionario tipado</li><li><span class="num">2</span>Los nodos</li><li><span class="num">3</span>Mostrar todo</li><li><span class="num">4</span>Añadir o cambiar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Buscar y Borrar</h3>
+<p>Buscar comprueba con <code>has()</code> antes de leer, para no dar error. Borrar usa <code>erase()</code>, que devuelve <code>true</code> si la clave estaba.</p><pre class="codigo"><code>func _on_buscar_pressed() -&gt; void:
+	if datos.has(clave.text):
+		resultado.text = clave.text + &quot; → &quot; + datos[clave.text]
+	else:
+		resultado.text = &quot;No existe la clave &quot; + clave.text
+
+
+func _on_borrar_pressed() -&gt; void:
+	if datos.erase(clave.text):
+		resultado.text = &quot;Borrada: &quot; + clave.text
+	else:
+		resultado.text = &quot;No existe la clave &quot; + clave.text
+	mostrar()</code></pre>
+<figure><a href="img/06_codigo_b.jpg" target="_blank"><img src="img/06_codigo_b.jpg" alt="Buscar y Borrar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>¿Existe?</li><li><span class="num">2</span>Leer el valor</li><li><span class="num">3</span>Borrar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Claves, Valores, Tamaño y Vaciar</h3>
+<p>Cada uno es una línea. <code>keys()</code> y <code>values()</code> devuelven <b>arrays</b>, así que puedes recorrerlos o mostrarlos con <code>str()</code>.</p><pre class="codigo"><code>func _on_claves_pressed() -&gt; void:
+	resultado.text = &quot;Claves: &quot; + str(datos.keys())
+
+
+func _on_valores_pressed() -&gt; void:
+	resultado.text = &quot;Valores: &quot; + str(datos.values())
+
+
+func _on_tamano_pressed() -&gt; void:
+	resultado.text = &quot;Tamaño: &quot; + str(datos.size())
+
+
+func _on_vaciar_pressed() -&gt; void:
+	datos.clear()
+	resultado.text = &quot;Diccionario vacío&quot;
+	mostrar()</code></pre>
+<figure><a href="img/07_codigo_c.jpg" target="_blank"><img src="img/07_codigo_c.jpg" alt="Claves, Valores, Tamaño y Vaciar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>keys()</li><li><span class="num">2</span>values()</li><li><span class="num">3</span>size()</li><li><span class="num">4</span>clear()</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Ejecuta y añade</h3>
+<p>Ejecuta la escena con <kbd>F6</kbd>. Añade <code>España → Madrid</code>, <code>Francia → París</code> e <code>Italia → Roma</code>. El diccionario aparece completo debajo.</p>
+<figure><a href="img/08_juego_anadir.jpg" target="_blank"><img src="img/08_juego_anadir.jpg" alt="Ejecuta y añade" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Clave y valor</li><li><span class="num">2</span>Añadir</li><li><span class="num">3</span>Tres parejas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Prueba Buscar</h3>
+<p>Escribe <code>Francia</code> en Clave y pulsa <b>Buscar</b>: aparece París. Prueba también con un país que no esté.</p>
+<figure><a href="img/09_juego_buscar.jpg" target="_blank"><img src="img/09_juego_buscar.jpg" alt="Prueba Buscar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Francia</li><li><span class="num">2</span>Buscar</li><li><span class="num">3</span>Francia → París</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Prueba Borrar y Claves</h3>
+<p>Escribe <code>España</code>, pulsa <b>Borrar</b> y después <b>Claves</b>: solo quedan Francia e Italia.</p>
+<figure><a href="img/10_juego_borrar.jpg" target="_blank"><img src="img/10_juego_borrar.jpg" alt="Prueba Borrar y Claves" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Borrar</li><li><span class="num">2</span>Claves</li><li><span class="num">3</span>Las claves que quedan</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li><code>datos[clave] = valor</code> añade o cambia.</li><li><code>has()</code> comprueba y <code>erase()</code> borra.</li><li><code>keys()</code>, <code>values()</code>, <code>size()</code> y <code>clear()</code> hacen el resto.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Al pulsar un botón no pasa nada.</b> Comprueba en la pestaña Señales que su <code>pressed</code> está conectado (icono verde junto a la función) y que el método se llama igual en el script.</li><li><b>Error «Invalid access to property or key» al buscar.</b> Lees una clave que no existe. Comprueba primero con <code>has()</code>.</li><li><b>Error «Node not found: Clave».</b> El nombre del nodo en el árbol debe coincidir exactamente con el de <code>$Clave</code>, mayúsculas incluidas.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Añade un botón <b>¿Existe valor?</b> que diga si un valor está en el diccionario (pista: <code>datos.values().has(...)</code>).</li><li>Haz que Añadir avise si la clave ya existía y se ha cambiado su valor.</li><li>Muestra el contenido una pareja por línea, recorriendo el diccionario con un <code>for</code>.</li></ul></section>
+<nav class="navegacion"><a href="../01-que-es-un-diccionario/index.html">← Qué es un diccionario y cómo funciona</a><a href="../03-inventario/index.html">Un inventario que cuenta →</a></nav>
+</main>
+<footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica 2. Un inventario que cuenta · Teoría de programación: diccionarios</title>
+<meta name="description" content="Un diccionario de String a int guarda objeto → cantidad. +1 suma o crea, −1 resta y borra al llegar a 0, y un for calcula el total.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body class="prog">
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 2</p>
+<h1>Un inventario que cuenta</h1>
+<p class="entrada">Un diccionario de String a int guarda objeto → cantidad. +1 suma o crea, −1 resta y borra al llegar a 0, y un for calcula el total.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás el <b>inventario</b> de un juego: escribes un objeto, lo sumas o lo gastas, y ves la lista y el total actualizados.</p><p class="partimos"><b>Partimos de:</b> El proyecto de la práctica 1 (laboratorio). Añadimos una escena nueva, <code>inventario.tscn</code>.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>Dictionary[String, int]</code><p>Claves de texto (el objeto) y valores enteros (la <b>cantidad</b>).</p></div><div class="concepto"><code>strip_edges()</code><p>Quita los <b>espacios</b> del principio y del final de un texto.</p></div><div class="concepto"><code>has() → += 1</code><p>El patrón <b>comprobar y sumar</b>: si existe, suma; si no, empieza en 1.</p></div><div class="concepto"><code>for clave in diccionario</code><p>Recorre todas las claves para mostrar y <b>sumar</b>.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Crea la interfaz</h3>
+<p>Crea una escena nueva con un <code>Control</code> llamado <b>Inventario</b> y guárdala como <code>inventario.tscn</code>. Dentro: un <code>Label</code> Titulo, un <code>LineEdit</code> <b>Objeto</b> (Placeholder Text: <code>objeto</code>), dos <code>Button</code> <b>Mas</b> y <b>Menos</b> (textos «+1» y «-1») y tres <code>Label</code>: <b>Mensaje</b>, <b>Lista</b> (grande, para varias líneas) y <b>Total</b>.</p>
+<figure><a href="img/01_interfaz.jpg" target="_blank"><img src="img/01_interfaz.jpg" alt="Crea la interfaz" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Los nodos</li><li><span class="num">2</span>LineEdit Objeto</li><li><span class="num">3</span>+1 y −1</li><li><span class="num">4</span>Label Lista</li><li><span class="num">5</span>Label Total</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Script y señales</h3>
+<p>Añade a <b>Inventario</b> un script <code>res://inventario.gd</code> que herede de <code>Control</code>. Después conecta la señal <code>pressed</code> de <b>Mas</b> y de <b>Menos</b> al nodo Inventario.</p>
+<figure><a href="img/02_conectar.jpg" target="_blank"><img src="img/02_conectar.jpg" alt="Script y señales" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Mas</li><li><span class="num">2</span>pressed()</li><li><span class="num">3</span>Receptor: Inventario</li><li><span class="num">4</span>_on_mas_pressed</li><li><span class="num">5</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>El diccionario y el botón +1</h3>
+<p>El diccionario guarda <b>objeto → cantidad</b>. Al pulsar +1 limpiamos el nombre con <code>strip_edges()</code> y, si está vacío, salimos con <code>return</code>. Si el objeto ya existe, le sumamos 1; si no, lo creamos con valor 1.</p><pre class="codigo"><code>extends Control
+
+var inventario: Dictionary[String, int] = {}
+
+@onready var objeto: LineEdit = $Objeto
+@onready var mensaje: Label = $Mensaje
+@onready var lista: Label = $Lista
+@onready var total: Label = $Total
+
+
+func _on_mas_pressed() -&gt; void:
+	var nombre := objeto.text.strip_edges()
+	if nombre == &quot;&quot;:
+		mensaje.text = &quot;Escribe un objeto&quot;
+		return
+	if inventario.has(nombre):
+		inventario[nombre] += 1
+	else:
+		inventario[nombre] = 1
+	mensaje.text = &quot;Añadido: &quot; + nombre
+	mostrar()</code></pre>
+<figure><a href="img/03_codigo_a.jpg" target="_blank"><img src="img/03_codigo_a.jpg" alt="El diccionario y el botón +1" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>String → int</li><li><span class="num">2</span>Nombre limpio</li><li><span class="num">3</span>Vacío: salimos</li><li><span class="num">4</span>Existe: +1</li><li><span class="num">5</span>Nuevo: 1</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>El botón −1 y mostrar()</h3>
+<p>−1 avisa si el objeto no existe. Si existe, resta 1 y, si llega a 0, lo <b>borra</b> con <code>erase()</code>. <code>mostrar()</code> recorre el diccionario con un <code>for</code>: una línea por objeto y la suma de todas las cantidades.</p><pre class="codigo"><code>func _on_menos_pressed() -&gt; void:
+	var nombre := objeto.text.strip_edges()
+	if not inventario.has(nombre):
+		mensaje.text = &quot;No tienes &quot; + nombre
+		return
+	inventario[nombre] -= 1
+	if inventario[nombre] == 0:
+		inventario.erase(nombre)
+		mensaje.text = &quot;Se acabó: &quot; + nombre
+	else:
+		mensaje.text = &quot;Gastado: &quot; + nombre
+	mostrar()
+
+
+func mostrar() -&gt; void:
+	var texto := &quot;&quot;
+	var suma := 0
+	for nombre in inventario:
+		texto += nombre + &quot;: &quot; + str(inventario[nombre]) + &quot;\n&quot;
+		suma += inventario[nombre]
+	lista.text = texto
+	total.text = &quot;Total: &quot; + str(suma)</code></pre>
+<figure><a href="img/04_codigo_b.jpg" target="_blank"><img src="img/04_codigo_b.jpg" alt="El botón −1 y mostrar()" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>No existe: aviso</li><li><span class="num">2</span>−1</li><li><span class="num">3</span>A 0: erase</li><li><span class="num">4</span>Recorrer</li><li><span class="num">5</span>Una línea por objeto</li><li><span class="num">6</span>Sumar cantidades</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Ejecuta y llena el inventario</h3>
+<p>Ejecuta con <kbd>F6</kbd>. Añade 3 pociones, 1 espada y 2 llaves (escribe el objeto y pulsa +1 las veces necesarias). El total es 6.</p>
+<figure><a href="img/05_juego.jpg" target="_blank"><img src="img/05_juego.jpg" alt="Ejecuta y llena el inventario" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Objeto y botones</li><li><span class="num">2</span>El inventario</li><li><span class="num">3</span>Total: 6</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Gasta un objeto</h3>
+<p>Escribe <code>espada</code> y pulsa −1. Llega a 0 y desaparece del inventario; el total baja a 5.</p>
+<figure><a href="img/06_juego_menos.jpg" target="_blank"><img src="img/06_juego_menos.jpg" alt="Gasta un objeto" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>−1</li><li><span class="num">2</span>Se acabó</li><li><span class="num">3</span>Ya sin espada</li><li><span class="num">4</span>Total: 5</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un diccionario <code>String → int</code> sirve para <b>contar</b>.</li><li>Comprueba con <code>has()</code> antes de sumar o restar.</li><li>Recórrelo con <code>for</code> para mostrarlo y calcular totales.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Error al sumar: «Invalid operands 'Nil' and 'int'».</b> Haces <code>inventario[nombre] += 1</code> de un objeto que no existe. Comprueba antes con <code>has()</code> (o usa <code>inventario.get(nombre, 0) + 1</code>).</li><li><b>«Poción» y «poción» salen como objetos distintos.</b> Las claves distinguen mayúsculas. Puedes guardarlo todo en minúsculas con <code>nombre.to_lower()</code>.</li><li><b>La Lista sale en una sola línea.</b> Revisa que cada línea termina con <code>"\n"</code> y que el Label Lista es alto.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Reescribe el botón +1 en una sola línea con <code>get()</code>: <code>inventario[nombre] = inventario.get(nombre, 0) + 1</code>.</li><li>Añade un botón <b>+5</b> y un SpinBox para elegir cuántas unidades sumar.</li><li>Muestra qué objeto tienes en mayor cantidad (recorre el diccionario guardando el máximo).</li></ul></section>
+<nav class="navegacion"><a href="../02-laboratorio/index.html">← Laboratorio de diccionarios</a><a href="../04-base-de-datos/index.html">Base de datos de alumnos →</a></nav>
+</main>
+<footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

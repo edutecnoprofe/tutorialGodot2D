@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica 4. Guardar y cargar en JSON · Teoría de programación: diccionarios</title>
+<meta name="description" content="La base de datos de alumnos se guarda en un archivo JSON y se carga al abrir el programa: JSON.stringify, JSON.parse_string y FileAccess.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body class="prog">
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 4</p>
+<h1>Guardar y cargar en JSON</h1>
+<p class="entrada">La base de datos de alumnos se guarda en un archivo JSON y se carga al abrir el programa: JSON.stringify, JSON.parse_string y FileAccess.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, los alumnos que des de alta <b>seguirán ahí</b> aunque cierres el programa: se guardan en <code>user://alumnos.json</code> y se cargan al abrir.</p><p class="partimos"><b>Partimos de:</b> El proyecto de la práctica 3 (base de datos de alumnos).</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>JSON</code><p>Formato de texto casi igual que un diccionario: llaves, claves entre comillas, dos puntos.</p></div><div class="concepto"><code>JSON.stringify() / JSON.parse_string()</code><p>Diccionario → <b>texto</b> / texto → <b>diccionario</b>.</p></div><div class="concepto"><code>FileAccess</code><p>Abre, escribe y lee <b>archivos</b>.</p></div><div class="concepto"><code>user://</code><p>Carpeta del usuario donde el juego <b>siempre puede escribir</b>.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Dos botones nuevos</h3>
+<p>Abre <code>alumnos.tscn</code> y añade dos <code>Button</code>: <b>GuardarArchivo</b> («Guardar archivo») y <b>CargarArchivo</b> («Cargar archivo»). Conecta la señal <code>pressed</code> de los dos a Alumnos.</p>
+<figure><a href="img/01_botones.jpg" target="_blank"><img src="img/01_botones.jpg" alt="Dos botones nuevos" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Botones nuevos</li><li><span class="num">2</span>En la interfaz</li><li><span class="num">3</span>Su texto</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Guardar y cargar el archivo</h3>
+<p>Añade al final del script la ruta y las dos funciones. Para <b>guardar</b>: abrir en modo escritura, convertir el diccionario en texto JSON y escribirlo. Para <b>cargar</b>: comprobar que existe, leer el texto, convertirlo en diccionario y copiarlo en <code>alumnos</code> con <code>assign()</code>.</p><pre class="codigo"><code>const RUTA := &quot;user://alumnos.json&quot;
+
+
+func guardar_archivo() -&gt; void:
+	var archivo := FileAccess.open(RUTA, FileAccess.WRITE)
+	archivo.store_string(JSON.stringify(alumnos, &quot;\t&quot;))
+	archivo.close()
+	info.text = &quot;Guardado en &quot; + RUTA
+
+
+func cargar_archivo() -&gt; void:
+	if not FileAccess.file_exists(RUTA):
+		info.text = &quot;Todavía no hay archivo&quot;
+		mostrar()
+		return
+	var texto := FileAccess.get_file_as_string(RUTA)
+	var leido = JSON.parse_string(texto)
+	if leido is Dictionary:
+		alumnos.assign(leido)
+		info.text = &quot;Cargados &quot; + str(alumnos.size()) + &quot; alumnos&quot;
+	mostrar()
+
+
+func _on_guardar_archivo_pressed() -&gt; void:
+	guardar_archivo()
+
+
+func _on_cargar_archivo_pressed() -&gt; void:
+	cargar_archivo()</code></pre>
+<figure><a href="img/02_codigo_archivo.jpg" target="_blank"><img src="img/02_codigo_archivo.jpg" alt="Guardar y cargar el archivo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>user://alumnos.json</li><li><span class="num">2</span>Abrir para escribir</li><li><span class="num">3</span>Diccionario → texto</li><li><span class="num">4</span>¿Existe?</li><li><span class="num">5</span>Texto → diccionario</li><li><span class="num">6</span>Copiar en alumnos</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Cargar al empezar</h3>
+<p>En <code>_ready()</code>, cambia la última línea: en vez de <code>mostrar()</code>, llama a <code>cargar_archivo()</code> (que ya llama a mostrar). Si hay archivo, sus datos sustituyen a los de ejemplo.</p><pre class="codigo"><code>func _ready() -&gt; void:
+	alumnos[&quot;A01&quot;] = {&quot;nombre&quot;: &quot;Ana&quot;, &quot;curso&quot;: &quot;2A&quot;, &quot;nota&quot;: 7.5}
+	alumnos[&quot;A02&quot;] = {&quot;nombre&quot;: &quot;Luis&quot;, &quot;curso&quot;: &quot;2B&quot;, &quot;nota&quot;: 4.0}
+	alumnos[&quot;A03&quot;] = {&quot;nombre&quot;: &quot;Marta&quot;, &quot;curso&quot;: &quot;2A&quot;, &quot;nota&quot;: 9.0}
+	cargar_archivo()</code></pre>
+<figure><a href="img/03_codigo_ready.jpg" target="_blank"><img src="img/03_codigo_ready.jpg" alt="Cargar al empezar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Datos de ejemplo</li><li><span class="num">2</span>Si hay archivo, manda</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Primera ejecución</h3>
+<p>Ejecuta con <kbd>F6</kbd>. La primera vez aún no hay archivo y ves los alumnos de ejemplo.</p>
+<figure><a href="img/04_juego_sin_archivo.jpg" target="_blank"><img src="img/04_juego_sin_archivo.jpg" alt="Primera ejecución" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Aún no hay archivo</li><li><span class="num">2</span>Datos de ejemplo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Guarda en el archivo</h3>
+<p>Da de alta a <code>A04 Pablo 2B 6.5</code>, pulsa <b>Guardar</b> y después <b>Guardar archivo</b>.</p>
+<figure><a href="img/05_juego_guardado.jpg" target="_blank"><img src="img/05_juego_guardado.jpg" alt="Guarda en el archivo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Pablo</li><li><span class="num">2</span>Guardar archivo</li><li><span class="num">3</span>Guardado</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Cierra y vuelve a abrir</h3>
+<p>Cierra la ventana del programa y ejecútalo otra vez: «Cargados 4 alumnos». Pablo sigue ahí.</p>
+<figure><a href="img/06_juego_cargado.jpg" target="_blank"><img src="img/06_juego_cargado.jpg" alt="Cierra y vuelve a abrir" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Cargados 4</li><li><span class="num">2</span>Pablo sigue</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>¿Dónde está el archivo?</h3>
+<p>Menú <b>Proyecto → Abrir Carpeta de Datos del Usuario</b>. Abre <code>alumnos.json</code> con el Bloc de notas: es tu diccionario escrito como texto.</p><pre class="codigo"><code>{
+	&quot;A01&quot;: {
+		&quot;curso&quot;: &quot;2A&quot;,
+		&quot;nombre&quot;: &quot;Ana&quot;,
+		&quot;nota&quot;: 7.5
+	},
+	...
+}</code></pre>
+<figure><a href="img/07_carpeta_usuario.jpg" target="_blank"><img src="img/07_carpeta_usuario.jpg" alt="¿Dónde está el archivo?" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Proyecto</li><li><span class="num">2</span>Carpeta de datos</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li><code>JSON.stringify()</code> convierte el diccionario en <b>texto</b>.</li><li><code>JSON.parse_string()</code> lo devuelve a <b>diccionario</b>.</li><li><code>FileAccess</code> lo guarda en <code>user://</code>, que no se borra al cerrar.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Un 4 vuelve como 4.0.</b> En JSON todos los números se leen como decimales (<code>float</code>). Si necesitas un entero, conviértelo con <code>int()</code>.</li><li><b>No carga nada y no da error.</b> Comprueba que pulsaste <b>Guardar archivo</b> y que la ruta es la misma en las dos funciones (usa la constante <code>RUTA</code>).</li><li><b>Error «Invalid call. Nonexistent function 'store_string' in base 'Nil'».</b> <code>FileAccess.open()</code> ha fallado y devolvió <code>null</code>. Usa una ruta que empiece por <code>user://</code>.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Guarda automáticamente: llama a <code>guardar_archivo()</code> al final de Guardar y de Borrar.</li><li>Añade un botón <b>Exportar</b> que guarde solo los aprobados en <code>user://aprobados.json</code>.</li><li>Guarda también la fecha del último guardado y muéstrala al cargar (<code>Time.get_datetime_string_from_system()</code>).</li></ul></section>
+<nav class="navegacion"><a href="../04-base-de-datos/index.html">← Base de datos de alumnos</a><span></span></nav>
+</main>
+<footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

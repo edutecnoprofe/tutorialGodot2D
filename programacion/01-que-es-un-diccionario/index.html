@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teoría. Qué es un diccionario y cómo funciona · Teoría de programación: diccionarios</title>
+<meta name="description" content="Un diccionario guarda parejas clave → valor. En vez de buscar por posición, como en un array, buscas por nombre: la clave.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body class="prog">
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Teoría</p>
+<h1>Qué es un diccionario y cómo funciona</h1>
+<p class="entrada">Un diccionario guarda parejas clave → valor. En vez de buscar por posición, como en un array, buscas por nombre: la clave.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Entender qué es un diccionario, en qué se diferencia de un array y saber usar sus operaciones básicas: crear, leer, añadir, cambiar, comprobar, borrar y recorrer.</p><p class="partimos"><b>Partimos de:</b> Ya sabes crear y recorrer arrays en GDScript. Para probar el código basta con un proyecto vacío: una escena con un nodo <code>Node</code> y este script.</p>
+<div class="descargas"><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>Clave</code><p>El <b>nombre</b> con el que guardas y buscas un dato. No se repite: cada clave aparece una sola vez.</p></div><div class="concepto"><code>Valor</code><p>El <b>dato</b> guardado con esa clave. Los valores sí pueden repetirse.</p></div><div class="concepto"><code>Dictionary[String, int]</code><p>Diccionario <b>tipado</b>: claves de tipo String y valores de tipo int.</p></div><div class="concepto"><code>{}</code><p>Las <b>llaves</b> crean un diccionario. <code>{}</code> es un diccionario vacío.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Array frente a diccionario</h3>
+<p>En un array cada dato tiene una <b>posición</b> (0, 1, 2…). En un diccionario cada dato tiene un <b>nombre</b>, la clave. Compara cómo guardarías las edades de una clase:</p><pre class="codigo"><code>var edades_array: Array[int] = [16, 17]
+print(edades_array[1])   # 17, pero ¿de quién?
+
+var edades: Dictionary[String, int] = {&quot;Ana&quot;: 16, &quot;Luis&quot;: 17}
+print(edades[&quot;Luis&quot;])     # 17, y sabemos que es de Luis</code></pre>
+
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Crear un diccionario</h3>
+<p>Se escribe entre <b>llaves</b>. Cada pareja es <code>clave: valor</code> y las parejas se separan con <b>comas</b>. Con tipado indicas el tipo de las claves y el de los valores.</p>
+<figure><a href="img/01_codigo.jpg" target="_blank"><img src="img/01_codigo.jpg" alt="Crear un diccionario" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Dictionary[String, int] con dos parejas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Leer, añadir y cambiar</h3>
+<p>Con la clave entre <b>corchetes</b> lees un valor. Si asignas a una clave nueva, la pareja se <b>añade</b>. Si la clave ya existe, su valor se <b>cambia</b>: en un diccionario no hay claves repetidas.</p><pre class="codigo"><code>edades[&quot;Marta&quot;] = 16    # clave nueva: se añade
+edades[&quot;Ana&quot;] = 17      # ya existe: se cambia
+print(edades[&quot;Luis&quot;])    # leer: 17</code></pre>
+<figure><a href="img/01_codigo.jpg" target="_blank"><img src="img/01_codigo.jpg" alt="Leer, añadir y cambiar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Añadir</li><li><span class="num">2</span>Cambiar</li><li><span class="num">3</span>Leer</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>¿Y si la clave no existe?</h3>
+<p>Leer <code>edades["Pablo"]</code> sin que exista da <b>error</b>. Antes pregunta con <code>has()</code>, que devuelve <code>true</code> o <code>false</code>, o usa <code>get()</code>, que devuelve un valor por defecto si la clave no está.</p><pre class="codigo"><code>if edades.has(&quot;Pablo&quot;):
+	print(edades[&quot;Pablo&quot;])
+
+print(edades.get(&quot;Pablo&quot;, 0))   # 0 si no existe</code></pre>
+<figure><a href="img/02_salida.jpg" target="_blank"><img src="img/02_salida.jpg" alt="¿Y si la clave no existe?" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>has("Pablo")</li><li><span class="num">2</span>Imprime false</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Borrar, claves, valores y tamaño</h3>
+<p><code>erase(clave)</code> borra una pareja. <code>keys()</code> devuelve un array con las claves, <code>values()</code> un array con los valores y <code>size()</code> cuántas parejas hay. <code>clear()</code> lo vacía entero.</p>
+<figure><a href="img/01_codigo.jpg" target="_blank"><img src="img/01_codigo.jpg" alt="Borrar, claves, valores y tamaño" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>erase: borrar</li><li><span class="num">2</span>keys, values, size</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Recorrer con for</h3>
+<p>En un <code>for</code>, la variable va tomando cada <b>clave</b>; con ella lees su valor. Fíjate en lo que imprime el panel <b>Salida</b>.</p><pre class="codigo"><code>for nombre in edades:
+	print(nombre, &quot;: &quot;, edades[nombre])</code></pre>
+<figure><a href="img/02_salida.jpg" target="_blank"><img src="img/02_salida.jpg" alt="Recorrer con for" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>keys() y values()</li><li><span class="num">2</span>El for: cada clave con su valor</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Tres trampas</h3>
+<p><b>1.</b> Las claves distinguen mayúsculas: <code>"Ana"</code> y <code>"ana"</code> son distintas. <b>2.</b> <code>"1"</code> (texto) y <code>1</code> (número) también. <b>3.</b> <code>b = a</code> no copia: las dos variables comparten el mismo diccionario. Para una copia de verdad usa <code>duplicate()</code>.</p><pre class="codigo"><code>var a: Dictionary[String, int] = {&quot;x&quot;: 1}
+var b := a              # comparten datos
+var c := a.duplicate()  # copia independiente
+b[&quot;x&quot;] = 99
+print(a[&quot;x&quot;])   # 99
+print(c[&quot;x&quot;])   # 1</code></pre>
+
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un diccionario guarda parejas <b>clave → valor</b>.</li><li>Accedes por la <b>clave</b>, no por la posición.</li><li><code>has</code>, <code>get</code>, <code>erase</code>, <code>keys</code>, <code>values</code> y <code>size</code> son tus herramientas.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Error «Invalid access to property or key».</b> Estás leyendo una clave que no existe. Comprueba antes con <code>has()</code> o usa <code>get(clave, valor_por_defecto)</code>.</li><li><b>Busco «ana» y no la encuentra, pero está.</b> Las claves distinguen mayúsculas y minúsculas. Guarda y busca siempre igual (por ejemplo, todo en minúsculas con <code>to_lower()</code>).</li><li><b>Cambio un diccionario y se cambia también otro.</b> Los dos son el mismo: <code>=</code> no copia. Usa <code>duplicate()</code>.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Crea un diccionario <code>Dictionary[String, String]</code> con el nombre de tres compañeros y su color favorito, y recórrelo con un <code>for</code>.</li><li>Usa <code>get()</code> para leer el color de alguien que no está, sin que dé error.</li><li>Cuenta cuántas veces aparece cada letra en una palabra usando un diccionario <code>Dictionary[String, int]</code>.</li></ul></section>
+<nav class="navegacion"><span></span><a href="../02-laboratorio/index.html">Laboratorio de diccionarios →</a></nav>
+</main>
+<footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

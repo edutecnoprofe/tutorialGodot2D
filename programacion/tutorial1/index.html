@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Teoría. Qué es un diccionario y cómo funciona · Teoría de programación: diccionarios</title>
+<title>Tutorial 1. Qué es un diccionario y cómo funciona · Teoría de programación: diccionarios</title>
 <meta name="description" content="Un diccionario guarda parejas clave → valor. En vez de buscar por posición, como en un array, buscas por nombre: la clave.">
 <link rel="stylesheet" href="../../estilo.css">
 </head>
 <body class="prog">
 <header class="cabecera">
-<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Teoría</p>
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Tutorial 1</p>
 <h1>Qué es un diccionario y cómo funciona</h1>
 <p class="entrada">Un diccionario guarda parejas clave → valor. En vez de buscar por posición, como en un array, buscas por nombre: la clave.</p>
 </header>
@@ -65,7 +65,7 @@ print(c[&quot;x&quot;])   # 1</code></pre>
 <section class="caja"><h2>Resumen</h2><ul><li>Un diccionario guarda parejas <b>clave → valor</b>.</li><li>Accedes por la <b>clave</b>, no por la posición.</li><li><code>has</code>, <code>get</code>, <code>erase</code>, <code>keys</code>, <code>values</code> y <code>size</code> son tus herramientas.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>Error «Invalid access to property or key».</b> Estás leyendo una clave que no existe. Comprueba antes con <code>has()</code> o usa <code>get(clave, valor_por_defecto)</code>.</li><li><b>Busco «ana» y no la encuentra, pero está.</b> Las claves distinguen mayúsculas y minúsculas. Guarda y busca siempre igual (por ejemplo, todo en minúsculas con <code>to_lower()</code>).</li><li><b>Cambio un diccionario y se cambia también otro.</b> Los dos son el mismo: <code>=</code> no copia. Usa <code>duplicate()</code>.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Crea un diccionario <code>Dictionary[String, String]</code> con el nombre de tres compañeros y su color favorito, y recórrelo con un <code>for</code>.</li><li>Usa <code>get()</code> para leer el color de alguien que no está, sin que dé error.</li><li>Cuenta cuántas veces aparece cada letra en una palabra usando un diccionario <code>Dictionary[String, int]</code>.</li></ul></section>
-<nav class="navegacion"><span></span><a href="../02-laboratorio/index.html">Laboratorio de diccionarios →</a></nav>
+<nav class="navegacion"><span></span><a href="../tutorial2/index.html">Laboratorio de diccionarios →</a></nav>
 </main>
 <footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
 </body>

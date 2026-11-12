@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Práctica 1. Laboratorio de diccionarios · Teoría de programación: diccionarios</title>
+<title>Tutorial 2. Laboratorio de diccionarios · Teoría de programación: diccionarios</title>
 <meta name="description" content="Una interfaz con botones para probar las operaciones de un diccionario: añadir, buscar, borrar, ver claves, valores, tamaño y vaciar.">
 <link rel="stylesheet" href="../../estilo.css">
 </head>
 <body class="prog">
 <header class="cabecera">
-<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 1</p>
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Tutorial 2</p>
 <h1>Laboratorio de diccionarios</h1>
 <p class="entrada">Una interfaz con botones para probar las operaciones de un diccionario: añadir, buscar, borrar, ver claves, valores, tamaño y vaciar.</p>
 </header>
@@ -106,7 +106,7 @@ func _on_vaciar_pressed() -&gt; void:
 <section class="caja"><h2>Resumen</h2><ul><li><code>datos[clave] = valor</code> añade o cambia.</li><li><code>has()</code> comprueba y <code>erase()</code> borra.</li><li><code>keys()</code>, <code>values()</code>, <code>size()</code> y <code>clear()</code> hacen el resto.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>Al pulsar un botón no pasa nada.</b> Comprueba en la pestaña Señales que su <code>pressed</code> está conectado (icono verde junto a la función) y que el método se llama igual en el script.</li><li><b>Error «Invalid access to property or key» al buscar.</b> Lees una clave que no existe. Comprueba primero con <code>has()</code>.</li><li><b>Error «Node not found: Clave».</b> El nombre del nodo en el árbol debe coincidir exactamente con el de <code>$Clave</code>, mayúsculas incluidas.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Añade un botón <b>¿Existe valor?</b> que diga si un valor está en el diccionario (pista: <code>datos.values().has(...)</code>).</li><li>Haz que Añadir avise si la clave ya existía y se ha cambiado su valor.</li><li>Muestra el contenido una pareja por línea, recorriendo el diccionario con un <code>for</code>.</li></ul></section>
-<nav class="navegacion"><a href="../01-que-es-un-diccionario/index.html">← Qué es un diccionario y cómo funciona</a><a href="../03-inventario/index.html">Un inventario que cuenta →</a></nav>
+<nav class="navegacion"><a href="../tutorial1/index.html">← Qué es un diccionario y cómo funciona</a><a href="../tutorial3/index.html">Un inventario que cuenta →</a></nav>
 </main>
 <footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
 </body>

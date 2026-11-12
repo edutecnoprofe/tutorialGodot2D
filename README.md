@@ -19,10 +19,10 @@ Cada tutorial enseña una sola cosa del motor 2D: [lista de tutoriales](videojue
 
 Qué es un diccionario y cuatro prácticas que crecen hasta una base de datos guardada en JSON: [lista](programacion/index.html).
 
-1. [Qué es un diccionario y cómo funciona](programacion/01-que-es-un-diccionario/index.html)
-2. [Práctica 1: laboratorio de diccionarios](programacion/02-laboratorio/index.html)
-3. [Práctica 2: un inventario que cuenta](programacion/03-inventario/index.html)
-4. [Práctica 3: base de datos de alumnos](programacion/04-base-de-datos/index.html)
-5. [Práctica 4: guardar y cargar en JSON](programacion/05-guardar-cargar/index.html)
+1. [Tutorial 1: qué es un diccionario y cómo funciona](programacion/tutorial1/index.html)
+2. [Tutorial 2: laboratorio de diccionarios](programacion/tutorial2/index.html)
+3. [Tutorial 3: un inventario que cuenta](programacion/tutorial3/index.html)
+4. [Tutorial 4: base de datos de alumnos](programacion/tutorial4/index.html)
+5. [Tutorial 5: guardar y cargar en JSON](programacion/tutorial5/index.html)
 
 Cada tutorial incluye el proyecto al empezar y el proyecto terminado (.zip) para abrirlos en Godot 4.6.

@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Práctica 3. Base de datos de alumnos · Teoría de programación: diccionarios</title>
+<title>Tutorial 4. Base de datos de alumnos · Teoría de programación: diccionarios</title>
 <meta name="description" content="Un diccionario de diccionarios: cada código de alumno lleva a su ficha (nombre, curso y nota). Alta, edición, baja y consultas como en una base de datos.">
 <link rel="stylesheet" href="../../estilo.css">
 </head>
 <body class="prog">
 <header class="cabecera">
-<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 3</p>
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Tutorial 4</p>
 <h1>Base de datos de alumnos</h1>
 <p class="entrada">Un diccionario de diccionarios: cada código de alumno lleva a su ficha (nombre, curso y nota). Alta, edición, baja y consultas como en una base de datos.</p>
 </header>
 <main>
 <div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
-<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás una pequeña <b>base de datos</b>: das de alta y editas alumnos con un formulario, los ves en una lista, los seleccionas y haces consultas (aprobados, media y alumnos por curso).</p><p class="partimos"><b>Partimos de:</b> El proyecto de la práctica 2. Añadimos una escena nueva, <code>alumnos.tscn</code>.</p>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás una pequeña <b>base de datos</b>: das de alta y editas alumnos con un formulario, los ves en una lista, los seleccionas y haces consultas (aprobados, media y alumnos por curso).</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 3. Añadimos una escena nueva, <code>alumnos.tscn</code>.</p>
 <div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
 <section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>Dictionary[String, Dictionary]</code><p>Cada clave (el código) guarda <b>otro diccionario</b>: la ficha del alumno.</p></div><div class="concepto"><code>alumnos[c]["nota"]</code><p><b>Dos corchetes</b>: primero el alumno, luego el campo de su ficha.</p></div><div class="concepto"><code>ItemList + item_selected</code><p>Lista de filas; la señal avisa con el <b>índice</b> de la fila pulsada.</p></div><div class="concepto"><code>get(clave, 0) + 1</code><p>Un diccionario <b>contador</b>: suma 1 aunque la clave aún no exista.</p></div></div></section>
 <section><h2>Paso a paso</h2><section class="paso" id="paso-1">
@@ -136,7 +136,7 @@ func _on_por_curso_pressed() -&gt; void:
 <section class="caja"><h2>Resumen</h2><ul><li>Un diccionario puede guardar <b>otros diccionarios</b>.</li><li>La clave te lleva directo a cada ficha: <code>alumnos[c]["nota"]</code>.</li><li>Con <code>for</code>, <code>get</code> y un contador haces consultas.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>Al seleccionar una fila sale otro alumno.</b> La lista y <code>keys()</code> deben ir en el mismo orden: vuelve a llamar a <code>mostrar()</code> después de cada cambio.</li><li><b>La nota se guarda como 0.</b> <code>to_float()</code> necesita punto decimal: escribe <code>6.5</code>, no <code>6,5</code>.</li><li><b>Error al leer <code>a["nombre"]</code>.</b> Revisa que los nombres de los campos coinciden en todas partes (<code>"nombre"</code>, <code>"curso"</code>, <code>"nota"</code>).</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Añade un LineEdit de búsqueda y un botón que muestre solo los alumnos cuyo nombre contenga ese texto (<code>contains()</code>).</li><li>Muestra la nota más alta y de quién es.</li><li>Calcula la media de cada curso con dos diccionarios: uno que sume notas y otro que cuente alumnos.</li></ul></section>
-<nav class="navegacion"><a href="../03-inventario/index.html">← Un inventario que cuenta</a><a href="../05-guardar-cargar/index.html">Guardar y cargar en JSON →</a></nav>
+<nav class="navegacion"><a href="../tutorial3/index.html">← Un inventario que cuenta</a><a href="../tutorial5/index.html">Guardar y cargar en JSON →</a></nav>
 </main>
 <footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
 </body>

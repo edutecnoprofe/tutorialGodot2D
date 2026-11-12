@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Práctica 4. Guardar y cargar en JSON · Teoría de programación: diccionarios</title>
+<title>Tutorial 5. Guardar y cargar en JSON · Teoría de programación: diccionarios</title>
 <meta name="description" content="La base de datos de alumnos se guarda en un archivo JSON y se carga al abrir el programa: JSON.stringify, JSON.parse_string y FileAccess.">
 <link rel="stylesheet" href="../../estilo.css">
 </head>
 <body class="prog">
 <header class="cabecera">
-<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 4</p>
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Tutorial 5</p>
 <h1>Guardar y cargar en JSON</h1>
 <p class="entrada">La base de datos de alumnos se guarda en un archivo JSON y se carga al abrir el programa: JSON.stringify, JSON.parse_string y FileAccess.</p>
 </header>
 <main>
 <div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
-<section class="caja"><h2>Objetivo</h2><p>Al terminar, los alumnos que des de alta <b>seguirán ahí</b> aunque cierres el programa: se guardan en <code>user://alumnos.json</code> y se cargan al abrir.</p><p class="partimos"><b>Partimos de:</b> El proyecto de la práctica 3 (base de datos de alumnos).</p>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, los alumnos que des de alta <b>seguirán ahí</b> aunque cierres el programa: se guardan en <code>user://alumnos.json</code> y se cargan al abrir.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 4 (base de datos de alumnos).</p>
 <div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
 <section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>JSON</code><p>Formato de texto casi igual que un diccionario: llaves, claves entre comillas, dos puntos.</p></div><div class="concepto"><code>JSON.stringify() / JSON.parse_string()</code><p>Diccionario → <b>texto</b> / texto → <b>diccionario</b>.</p></div><div class="concepto"><code>FileAccess</code><p>Abre, escribe y lee <b>archivos</b>.</p></div><div class="concepto"><code>user://</code><p>Carpeta del usuario donde el juego <b>siempre puede escribir</b>.</p></div></div></section>
 <section><h2>Paso a paso</h2><section class="paso" id="paso-1">
@@ -89,7 +89,7 @@ func _on_cargar_archivo_pressed() -&gt; void:
 <section class="caja"><h2>Resumen</h2><ul><li><code>JSON.stringify()</code> convierte el diccionario en <b>texto</b>.</li><li><code>JSON.parse_string()</code> lo devuelve a <b>diccionario</b>.</li><li><code>FileAccess</code> lo guarda en <code>user://</code>, que no se borra al cerrar.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>Un 4 vuelve como 4.0.</b> En JSON todos los números se leen como decimales (<code>float</code>). Si necesitas un entero, conviértelo con <code>int()</code>.</li><li><b>No carga nada y no da error.</b> Comprueba que pulsaste <b>Guardar archivo</b> y que la ruta es la misma en las dos funciones (usa la constante <code>RUTA</code>).</li><li><b>Error «Invalid call. Nonexistent function 'store_string' in base 'Nil'».</b> <code>FileAccess.open()</code> ha fallado y devolvió <code>null</code>. Usa una ruta que empiece por <code>user://</code>.</li></ul></section>
 <section class="caja retos"><h2>Prueba tú</h2><ul><li>Guarda automáticamente: llama a <code>guardar_archivo()</code> al final de Guardar y de Borrar.</li><li>Añade un botón <b>Exportar</b> que guarde solo los aprobados en <code>user://aprobados.json</code>.</li><li>Guarda también la fecha del último guardado y muéstrala al cargar (<code>Time.get_datetime_string_from_system()</code>).</li></ul></section>
-<nav class="navegacion"><a href="../04-base-de-datos/index.html">← Base de datos de alumnos</a><span></span></nav>
+<nav class="navegacion"><a href="../tutorial4/index.html">← Base de datos de alumnos</a><span></span></nav>
 </main>
 <footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
 </body>

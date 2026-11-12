@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Práctica 2. Un inventario que cuenta · Teoría de programación: diccionarios</title>
+<title>Tutorial 3. Un inventario que cuenta · Teoría de programación: diccionarios</title>
 <meta name="description" content="Un diccionario de String a int guarda objeto → cantidad. +1 suma o crea, −1 resta y borra al llegar a 0, y un for calcula el total.">
 <link rel="stylesheet" href="../../estilo.css">
 </head>
 <body class="prog">
 <header class="cabecera">
-<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Práctica 2</p>
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../programacion/index.html">Teoría de programación: diccionarios</a> · Tutorial 3</p>
 <h1>Un inventario que cuenta</h1>
 <p class="entrada">Un diccionario de String a int guarda objeto → cantidad. +1 suma o crea, −1 resta y borra al llegar a 0, y un for calcula el total.</p>
 </header>
 <main>
 <div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
-<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás el <b>inventario</b> de un juego: escribes un objeto, lo sumas o lo gastas, y ves la lista y el total actualizados.</p><p class="partimos"><b>Partimos de:</b> El proyecto de la práctica 1 (laboratorio). Añadimos una escena nueva, <code>inventario.tscn</code>.</p>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás el <b>inventario</b> de un juego: escribes un objeto, lo sumas o lo gastas, y ves la lista y el total actualizados.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 2 (laboratorio). Añadimos una escena nueva, <code>inventario.tscn</code>.</p>
 <div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
 <section><h2>Conceptos clave</h2><div class="conceptos"><div class="concepto"><code>Dictionary[String, int]</code><p>Claves de texto (el objeto) y valores enteros (la <b>cantidad</b>).</p></div><div class="concepto"><code>strip_edges()</code><p>Quita los <b>espacios</b> del principio y del final de un texto.</p></div><div class="concepto"><code>has() → += 1</code><p>El patrón <b>comprobar y sumar</b>: si existe, suma; si no, empieza en 1.</p></div><div class="concepto"><code>for clave in diccionario</code><p>Recorre todas las claves para mostrar y <b>sumar</b>.</p></div></div></section>
 <section><h2>Paso a paso</h2><section class="paso" id="paso-1">
@@ -86,8 +86,8 @@ func mostrar() -&gt; void:
 </section></section>
 <section class="caja"><h2>Resumen</h2><ul><li>Un diccionario <code>String → int</code> sirve para <b>contar</b>.</li><li>Comprueba con <code>has()</code> antes de sumar o restar.</li><li>Recórrelo con <code>for</code> para mostrarlo y calcular totales.</li></ul></section>
 <section><h2>Si algo falla</h2><ul class="errores"><li><b>Error al sumar: «Invalid operands 'Nil' and 'int'».</b> Haces <code>inventario[nombre] += 1</code> de un objeto que no existe. Comprueba antes con <code>has()</code> (o usa <code>inventario.get(nombre, 0) + 1</code>).</li><li><b>«Poción» y «poción» salen como objetos distintos.</b> Las claves distinguen mayúsculas. Puedes guardarlo todo en minúsculas con <code>nombre.to_lower()</code>.</li><li><b>La Lista sale en una sola línea.</b> Revisa que cada línea termina con <code>"\n"</code> y que el Label Lista es alto.</li></ul></section>
-<section class="caja retos"><h2>Prueba tú</h2><ul><li>Reescribe el botón +1 en una sola línea con <code>get()</code>: <code>inventario[nombre] = inventario.get(nombre, 0) + 1</code>.</li><li>Añade un botón <b>+5</b> y un SpinBox para elegir cuántas unidades sumar.</li><li>Muestra qué objeto tienes en mayor cantidad (recorre el diccionario guardando el máximo).</li></ul></section>
-<nav class="navegacion"><a href="../02-laboratorio/index.html">← Laboratorio de diccionarios</a><a href="../04-base-de-datos/index.html">Base de datos de alumnos →</a></nav>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Crea una función genérica <code>sumar(nombre: String, cantidad: int)</code> que añada esa cantidad al objeto (si no existe en el inventario, lo crea con esa cantidad) y actualice la lista con <code>mostrar()</code>. Haz que el botón +1 llame a <code>sumar(nombre, 1)</code>.</li><li>Añade un botón <b>+5</b> y un SpinBox para elegir cuántas unidades sumar, reutilizando la función <code>sumar(nombre, cantidad)</code>.</li><li>Muestra qué objeto tienes en mayor cantidad (recorre el diccionario guardando el máximo).</li></ul></section>
+<nav class="navegacion"><a href="../tutorial2/index.html">← Laboratorio de diccionarios</a><a href="../tutorial4/index.html">Base de datos de alumnos →</a></nav>
 </main>
 <footer class="pie"><p>Teoría de programación: diccionarios · Godot 4.6 · <a href="../../programacion/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
 </body>

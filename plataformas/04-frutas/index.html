@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 4. Frutas animadas y coleccionables · Juego de plataformas</title>
+<meta name="description" content="Una escena Fruta (Area2D) que gira sin parar y, cuando la toca el jugador, hace un destello y desaparece. Las señales se conectan desde el editor y el jugador se identifica con un grupo.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 4</p>
+<h1>Frutas animadas y coleccionables</h1>
+<p class="entrada">Una escena Fruta (Area2D) que gira sin parar y, cuando la toca el jugador, hace un destello y desaparece. Las señales se conectan desde el editor y el jugador se identifica con un grupo.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás una escena <b>fruta.tscn</b> reutilizable: una manzana animada que, al tocarla la rana, reproduce la animación <b>recoger</b> y luego se borra con <code>queue_free()</code>. Pondrás varias en el nivel.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 3. En <code>assets/frutas</code> hay ocho frutas (tiras de 17 dibujos) y <code>recoger.png</code>, el destello al recogerlas.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>Area2D</code><p>Zona que <b>detecta</b> cuerpos que entran o salen, sin chocar con ellos. Perfecta para cosas que se recogen.</p></div><div class="concepto"><code>Grupo</code><p>Etiqueta que se pone a un nodo desde el panel <b>Grupos</b>. Con <code>is_in_group("jugador")</code> sabemos si el cuerpo que entra es la rana.</p></div><div class="concepto"><code>body_entered</code><p>Señal del Area2D: avisa cuando entra un cuerpo y nos lo pasa como <code>body</code>.</p></div><div class="concepto"><code>animation_finished</code><p>Señal del AnimatedSprite2D: avisa cuando termina una animación <b>sin bucle</b>.</p></div><div class="concepto"><code>queue_free()</code><p>Borra el nodo (y sus hijos) en cuanto Godot puede hacerlo sin problemas.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre el proyecto. En <code>assets/frutas</code> están las frutas: cada imagen es una tira de 17 dibujos que hacen girar la fruta. <code>recoger.png</code> es el destello que sale al cogerla.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Carpeta frutas</li><li><span class="num">2</span>manzana.png</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Nueva escena con un Area2D</h3>
+<p>Crea una escena nueva (<kbd>Ctrl</kbd>+<kbd>N</kbd>), elige <b>Otro Nodo</b> y busca <code>Area2D</code>. Renómbralo a <b>Fruta</b>.</p>
+<figure><a href="img/02_crear_area.jpg" target="_blank"><img src="img/02_crear_area.jpg" alt="Nueva escena con un Area2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Area2D</li><li><span class="num">2</span>Area2D</li><li><span class="num">3</span>Detecta lo que entra</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Animación idle de la manzana</h3>
+<p>Añade a Fruta un <code>AnimatedSprite2D</code> con un <b>Nuevo SpriteFrames</b>. Renombra <code>default</code> a <b>idle</b> y añade fotogramas desde la hoja <code>manzana.png</code>: <code>17 × 1</code>, <b>Elegir Todo</b>, <b>Añadir</b>. Ponla a 20 FPS, con bucle y con <b>autoplay</b>.</p>
+<figure><a href="img/03_hoja_manzana.jpg" target="_blank"><img src="img/03_hoja_manzana.jpg" alt="Animación idle de la manzana" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>17 × 1</li><li><span class="num">2</span>Elegir Todo</li><li><span class="num">3</span>17 fotogramas</li><li><span class="num">4</span>Añadir</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Animación recoger</h3>
+<p>Añade otra animación, <b>recoger</b>, con la hoja <code>recoger.png</code> (<code>6 × 1</code>), a 20 FPS y <b>sin bucle</b>: el destello se ve una sola vez.</p>
+<figure><a href="img/04_recoger.jpg" target="_blank"><img src="img/04_recoger.jpg" alt="Animación recoger" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>idle y recoger</li><li><span class="num">2</span>Sin bucle</li><li><span class="num">3</span>20 FPS</li><li><span class="num">4</span>Destello</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Forma de colisión</h3>
+<p>Añade a Fruta un <code>CollisionShape2D</code> con un <b>Nuevo CircleShape2D</b> de radio <code>7</code>: cubre la manzana. Guarda la escena como <code>fruta.tscn</code>.</p>
+<figure><a href="img/05_circulo.jpg" target="_blank"><img src="img/05_circulo.jpg" alt="Forma de colisión" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>La escena Fruta</li><li><span class="num">2</span>Radio 7</li><li><span class="num">3</span>Cubre la manzana</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Pon al jugador en un grupo</h3>
+<p>Abre <code>jugador.tscn</code> y selecciona <b>Jugador</b>. En el panel <b>Grupos</b>, pulsa <b>+</b>, escribe <code>jugador</code> y acepta. Aparece un icono junto al nodo. Guarda.</p>
+<figure><a href="img/06_grupo.jpg" target="_blank"><img src="img/06_grupo.jpg" alt="Pon al jugador en un grupo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Panel Grupos</li><li><span class="num">2</span>Grupo jugador</li><li><span class="num">3</span>Icono de grupo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Script y señal body_entered</h3>
+<p>Vuelve a <code>fruta.tscn</code>, añade un script a <b>Fruta</b> (sin plantilla, <code>fruta.gd</code>). En el panel <b>Señales</b>, haz doble clic en <code>body_entered</code>, comprueba que el receptor es <b>Fruta</b> y pulsa <b>Conectar</b>.</p>
+<figure><a href="img/07_senal_body.jpg" target="_blank"><img src="img/07_senal_body.jpg" alt="Script y señal body_entered" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>body_entered</li><li><span class="num">2</span>Receptor: Fruta</li><li><span class="num">3</span>_on_body_entered</li><li><span class="num">4</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Señal animation_finished</h3>
+<p>Selecciona el <b>AnimatedSprite2D</b>, y en <b>Señales</b> haz doble clic en <code>animation_finished</code>. Elige <b>Fruta</b> como receptor (la que tiene el script) y pulsa <b>Conectar</b>.</p>
+<figure><a href="img/08_senal_animacion.jpg" target="_blank"><img src="img/08_senal_animacion.jpg" alt="Señal animation_finished" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>animation_finished</li><li><span class="num">2</span>Receptor: Fruta</li><li><span class="num">3</span>Nombre de la función</li><li><span class="num">4</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Escribe el código</h3>
+<p>Godot ya ha creado las dos funciones. En la primera, si lo que entra es del grupo <code>jugador</code>, mostramos un mensaje y reproducimos <code>recoger</code>. En la segunda, cuando el destello termina, la fruta se borra.</p><pre class="codigo"><code>extends Area2D
+
+
+func _on_body_entered(body: Node2D) -&gt; void:
+	# Solo la recoge el jugador
+	if body.is_in_group(&quot;jugador&quot;):
+		print(&quot;¡Fruta recogida!&quot;)
+		$AnimatedSprite2D.play(&quot;recoger&quot;)
+
+
+func _on_animated_sprite_2d_animation_finished() -&gt; void:
+	# Al terminar la animación «recoger», la fruta desaparece
+	queue_free()</code></pre>
+<figure><a href="img/09_codigo.jpg" target="_blank"><img src="img/09_codigo.jpg" alt="Escribe el código" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>¿Es el jugador?</li><li><span class="num">2</span>Destello</li><li><span class="num">3</span>Al acabar el destello</li><li><span class="num">4</span>Se borra</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Pon frutas en el nivel</h3>
+<p>En <code>nivel.tscn</code>, selecciona <b>Nivel</b> e <b>instancia</b> <code>fruta.tscn</code>. Colócala sobre una isla y duplícala con <kbd>Ctrl</kbd>+<kbd>D</kbd> para poner más (por ejemplo en <code>152, 164</code>, <code>256, 116</code>, <code>344, 164</code>, <code>680, 164</code> y <code>800, 116</code>). Guarda.</p>
+<figure><a href="img/10_frutas_nivel.jpg" target="_blank"><img src="img/10_frutas_nivel.jpg" alt="Pon frutas en el nivel" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Cinco frutas</li><li><span class="num">2</span>Sobre las islas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-11">
+<h3><span class="paso-n">11</span>Ejecuta y recoge</h3>
+<p>Ejecuta con <kbd>F5</kbd> y salta a por las frutas. Al tocarlas, hacen un destello y desaparecen.</p>
+<figure><a href="img/11_juego.jpg" target="_blank"><img src="img/11_juego.jpg" alt="Ejecuta y recoge" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El juego</li><li><span class="num">2</span>Fruta recogida</li><li><span class="num">3</span>A por la siguiente</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-12">
+<h3><span class="paso-n">12</span>Mira la salida</h3>
+<p>Al parar el juego, en el panel <b>Salida</b> aparece un «¡Fruta recogida!» por cada fruta. En el próximo tutorial las contaremos de verdad.</p>
+<figure><a href="img/12_salida.jpg" target="_blank"><img src="img/12_salida.jpg" alt="Mira la salida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Un mensaje por fruta</li><li><span class="num">2</span>Panel Salida</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>Area2D</b> detecta al jugador con la señal <code>body_entered</code>.</li><li>Los <b>grupos</b> sirven para saber qué tipo de cuerpo ha entrado.</li><li>La señal <code>animation_finished</code> espera al destello antes de borrar la fruta con <code>queue_free()</code>.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>La fruta no desaparece.</b> La animación <b>recoger</b> debe ir <b>sin bucle</b>: si se repite, <code>animation_finished</code> nunca llega.</li><li><b>No pasa nada al tocarla.</b> Mira que Jugador esté en el grupo <code>jugador</code> (exactamente así, en minúsculas) y que las funciones tengan el icono verde de señal conectada.</li><li><b>La fruta no se anima en el juego.</b> Activa el <b>autoplay</b> de la animación <b>idle</b>.</li><li><b>Error al conectar animation_finished: la función no existe.</b> El receptor debe ser <b>Fruta</b> (el nodo con el script), no el AnimatedSprite2D.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Crea otras frutas: duplica <code>fruta.tscn</code> (clic derecho → Duplicar) y cambia la hoja de la animación idle por <code>platano.png</code> o <code>fresa.png</code>.</li><li>Haz que la fruta no se pueda recoger dos veces: desactiva su forma con <code>$CollisionShape2D.set_deferred("disabled", true)</code> al tocarla.</li><li>Cambia el mensaje para que diga qué fruta has cogido usando <code>name</code>.</li></ul></section>
+<nav class="navegacion"><a href="../03-plataforma-movil/index.html">← Plataforma móvil con AnimationPlayer</a><a href="../05-game-manager/index.html">Un GameManager para los puntos y las vidas →</a></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

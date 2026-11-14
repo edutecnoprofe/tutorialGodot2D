@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 2. Animaciones del personaje con AnimatedSprite2D · Juego de plataformas</title>
+<meta name="description" content="Cambiamos el dibujo fijo de la rana por un AnimatedSprite2D con cuatro animaciones (idle, run, jump y fall) y elegimos cuál suena según lo que hace el personaje.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 2</p>
+<h1>Animaciones del personaje con AnimatedSprite2D</h1>
+<p class="entrada">Cambiamos el dibujo fijo de la rana por un AnimatedSprite2D con cuatro animaciones (idle, run, jump y fall) y elegimos cuál suena según lo que hace el personaje.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, la rana estará <b>quieta</b> respirando (idle), <b>correrá</b> al moverse (run), cambiará de dibujo al <b>saltar</b> (jump) y al <b>caer</b> (fall), y mirará siempre hacia donde va.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 1: la escena <code>jugador.tscn</code> con un <code>Sprite2D</code> que solo muestra un dibujo, y el script <code>jugador.gd</code> que ya mueve y hace saltar a la rana.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>AnimatedSprite2D</code><p>Como un Sprite2D, pero con <b>varias animaciones</b>, cada una hecha de varios dibujos (fotogramas) que se van turnando.</p></div><div class="concepto"><code>SpriteFrames</code><p>Recurso que guarda las animaciones: su <b>nombre</b>, sus <b>fotogramas</b>, su velocidad (FPS) y si se repiten en bucle.</p></div><div class="concepto"><code>Hoja de sprites</code><p>Una imagen con todos los fotogramas en fila. Godot la corta en trozos iguales (aquí, de 32 × 32 píxeles).</p></div><div class="concepto"><code>play("nombre")</code><p>Reproduce esa animación. Si ya se está reproduciendo, la deja seguir: por eso podemos llamarlo en cada fotograma.</p></div><div class="concepto"><code>flip_h</code><p>Da la vuelta al dibujo en horizontal: con él la rana mira a la izquierda sin necesitar otra hoja de sprites.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre <code>jugador.tscn</code>. El <code>Sprite2D</code> solo enseña un dibujo de la tira <code>idle.png</code>. En <code>assets/jugador</code> están también <code>run.png</code>, <code>jump.png</code> y <code>fall.png</code>.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Sprite2D: un dibujo</li><li><span class="num">2</span>Siempre igual</li><li><span class="num">3</span>Más dibujos</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Cambia el tipo a AnimatedSprite2D</h3>
+<p>Haz clic derecho en <b>Sprite2D → Cambiar Tipo…</b>, busca <code>AnimatedSprite2D</code> y pulsa <b>Cambiar</b>. Después renómbralo a <b>AnimatedSprite2D</b> (<kbd>F2</kbd>), porque así lo llamaremos en el código.</p>
+<figure><a href="img/02_cambiar_tipo.jpg" target="_blank"><img src="img/02_cambiar_tipo.jpg" alt="Cambia el tipo a AnimatedSprite2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>AnimatedSprite2D</li><li><span class="num">2</span>El nuevo tipo</li><li><span class="num">3</span>Fotogramas</li><li><span class="num">4</span>Cambiar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Crea un SpriteFrames</h3>
+<p>En el Inspector, abre el desplegable de <b>Sprite Frames</b> y elige <b>Nuevo SpriteFrames</b>. Haz clic sobre él: abajo se abre el panel <b>Fotogramas de Sprite</b>.</p>
+<figure><a href="img/03_nuevo_spriteframes.jpg" target="_blank"><img src="img/03_nuevo_spriteframes.jpg" alt="Crea un SpriteFrames" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>AnimatedSprite2D</li><li><span class="num">2</span>Sprite Frames</li><li><span class="num">3</span>Nuevo SpriteFrames</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Animación idle desde la hoja</h3>
+<p>Renombra la animación <code>default</code> a <b>idle</b> (doble clic). Pulsa <b>Añadir fotogramas desde una hoja de sprites</b> (icono de cuadrícula) y elige <code>idle.png</code>. Pon <b>Horizontal</b> <code>11</code> y <b>Vertical</b> <code>1</code>, pulsa <b>Elegir Todo</b> y <b>Añadir 11 Fotograma(s)</b>.</p>
+<figure><a href="img/04_hoja_idle.jpg" target="_blank"><img src="img/04_hoja_idle.jpg" alt="Animación idle desde la hoja" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>11 × 1</li><li><span class="num">2</span>Elegir Todo</li><li><span class="num">3</span>11 fotogramas</li><li><span class="num">4</span>Añadir</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Velocidad de la animación</h3>
+<p>Pon la animación a <code>20</code> FPS (fotogramas por segundo). Deja el <b>bucle</b> activado: la rana respira sin parar mientras está quieta.</p>
+<figure><a href="img/05_animacion_idle.jpg" target="_blank"><img src="img/05_animacion_idle.jpg" alt="Velocidad de la animación" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>idle</li><li><span class="num">2</span>En bucle</li><li><span class="num">3</span>20 FPS</li><li><span class="num">4</span>Fotogramas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Añade run, jump y fall</h3>
+<p>Con el botón <b>Añadir Animación</b> crea <b>run</b> (hoja <code>run.png</code>, <code>12 × 1</code>, 20 FPS), <b>jump</b> (<code>jump.png</code>, <code>1 × 1</code>) y <b>fall</b> (<code>fall.png</code>, <code>1 × 1</code>). Saltar y caer tienen un solo dibujo cada una.</p>
+<figure><a href="img/06_cuatro_animaciones.jpg" target="_blank"><img src="img/06_cuatro_animaciones.jpg" alt="Añade run, jump y fall" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Cuatro animaciones</li><li><span class="num">2</span>fall: un dibujo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>idle al empezar</h3>
+<p>Selecciona <b>idle</b> y pulsa <b>Reproducir automáticamente al cargar</b>. Guarda la escena.</p>
+<figure><a href="img/07_autoplay.jpg" target="_blank"><img src="img/07_autoplay.jpg" alt="idle al empezar" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Autoplay</li><li><span class="num">2</span>idle</li><li><span class="num">3</span>Animation: idle</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Prepara el script</h3>
+<p>Abre <code>jugador.gd</code>. Añade una variable <code>sprite</code> con <code>@onready</code> que apunte al <code>$AnimatedSprite2D</code>, y al final de <code>_physics_process</code>, después de <code>move_and_slide()</code>, llama a <code>animar(direccion)</code>.</p><pre class="codigo"><code>@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+
+# ... al final de _physics_process:
+	move_and_slide()
+	animar(direccion)</code></pre>
+<figure><a href="img/08_codigo_sprite.jpg" target="_blank"><img src="img/08_codigo_sprite.jpg" alt="Prepara el script" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Referencia al sprite</li><li><span class="num">2</span>Llamamos a animar()</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Escribe la función animar()</h3>
+<p>Primero, si se mueve, <code>flip_h</code> le da la vuelta cuando va a la izquierda. Después elegimos la animación: en el aire, <code>jump</code> si sube (velocidad negativa) o <code>fall</code> si baja; en el suelo, <code>run</code> si se mueve o <code>idle</code> si está quieta.</p><pre class="codigo"><code>func animar(direccion: float) -&gt; void:
+	# Mirar hacia donde se mueve
+	if direccion != 0:
+		sprite.flip_h = direccion &lt; 0
+
+	# Elegir la animación según lo que hace
+	if not is_on_floor():
+		if velocity.y &lt; 0:
+			sprite.play(&quot;jump&quot;)
+		else:
+			sprite.play(&quot;fall&quot;)
+	elif direccion != 0:
+		sprite.play(&quot;run&quot;)
+	else:
+		sprite.play(&quot;idle&quot;)</code></pre>
+<figure><a href="img/09_codigo_animar.jpg" target="_blank"><img src="img/09_codigo_animar.jpg" alt="Escribe la función animar()" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Mirar a un lado</li><li><span class="num">2</span>En el aire</li><li><span class="num">3</span>Corre</li><li><span class="num">4</span>Quieta</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Ejecuta y prueba</h3>
+<p>Ejecuta con <kbd>F5</kbd>. Quieta respira, al moverte corre, al saltar cambia de dibujo al subir y al bajar, y mira siempre hacia donde va.</p>
+<figure><a href="img/10_juego.jpg" target="_blank"><img src="img/10_juego.jpg" alt="Ejecuta y prueba" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El juego</li><li><span class="num">2</span>jump, mirando a la izquierda</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>AnimatedSprite2D</b> guarda varias animaciones en un recurso <b>SpriteFrames</b>.</li><li>Las animaciones se crean desde el editor cortando hojas de sprites.</li><li>En el código solo elegimos cuál suena con <code>play()</code> según el estado, y <code>flip_h</code> la hace mirar al lado correcto.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Error «Node not found: AnimatedSprite2D».</b> El nodo debe llamarse <b>exactamente</b> AnimatedSprite2D (al cambiar el tipo conserva el nombre Sprite2D: renómbralo).</li><li><b>La rana no se anima o se queda en un dibujo.</b> Los nombres en <code>play("...")</code> deben coincidir con los del panel (en minúsculas: idle, run, jump, fall).</li><li><b>Al correr se ven trozos de dos ranas.</b> La hoja se cortó mal: <code>run.png</code> tiene 12 dibujos (12 × 1) e <code>idle.png</code> 11 (11 × 1).</li><li><b>Corre mirando hacia atrás.</b> Revisa la condición: <code>flip_h = direccion &lt; 0</code> (da la vuelta cuando va a la izquierda).</li><li><b>Al pararse vuelve a mirar a la derecha.</b> El <code>if direccion != 0</code> evita cambiar <code>flip_h</code> cuando está quieta: comprueba que está.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia los FPS de <b>run</b> a 30 o a 10: ¿cuál queda mejor?</li><li>Añade la animación <b>hit</b> (<code>hit.png</code>, 7 × 1) aunque todavía no la uses: la necesitaremos cuando el jugador reciba daño.</li><li>Usa <code>sprite.speed_scale</code> para que la animación de correr vaya más rápida cuando la velocidad sea mayor.</li></ul></section>
+<nav class="navegacion"><a href="../01-controlador/index.html">← Controlador básico: moverse y saltar</a><a href="../03-plataforma-movil/index.html">Plataforma móvil con AnimationPlayer →</a></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

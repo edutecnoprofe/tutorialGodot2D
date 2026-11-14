@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 3. Plataforma móvil con AnimationPlayer · Juego de plataformas</title>
+<meta name="description" content="Una plataforma que va y viene sobre un hueco y lleva encima al jugador. Sin escribir código: un AnimatableBody2D y un AnimationPlayer con dos claves.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 3</p>
+<h1>Plataforma móvil con AnimationPlayer</h1>
+<p class="entrada">Una plataforma que va y viene sobre un hueco y lleva encima al jugador. Sin escribir código: un AnimatableBody2D y un AnimationPlayer con dos claves.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, una <b>Plataforma</b> irá y vendrá sobre el hueco del nivel, y la rana podrá subirse para cruzar. Todo se hace desde el editor: nodos, Inspector y panel de <b>Animación</b>.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 2: el nivel con un hueco que la rana no puede saltar, y el jugador con sus animaciones.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>AnimatableBody2D</code><p>Cuerpo físico que <b>no se mueve con la física</b>, pero que, si lo movemos (con una animación o con código), <b>empuja y arrastra</b> a los cuerpos que lleva encima.</p></div><div class="concepto"><code>AnimationPlayer</code><p>Nodo que anima <b>cualquier propiedad</b> de cualquier nodo: posición, color, escala… Guarda las animaciones como pistas con claves.</p></div><div class="concepto"><code>Clave (keyframe)</code><p>Un valor en un momento. Entre dos claves, Godot calcula los valores intermedios.</p></div><div class="concepto"><code>Ping-pong</code><p>Modo de bucle que reproduce la animación hacia delante y luego hacia atrás, sin saltos: ida y vuelta.</p></div><div class="concepto"><code>One Way Collision</code><p>La forma solo choca por arriba: el jugador puede atravesarla desde abajo y quedarse de pie encima.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre <code>nivel.tscn</code>. En medio del nivel hay un <b>hueco</b> demasiado ancho para saltarlo. Vamos a poner una plataforma que lo cruce.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Escena del nivel</li><li><span class="num">2</span>El hueco</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Añade un AnimatableBody2D</h3>
+<p>Con <b>Nivel</b> seleccionado, pulsa <b>+</b> y busca <code>AnimatableBody2D</code>. Es un StaticBody2D especial: cuando se mueve, <b>arrastra</b> a lo que tiene encima. Créalo y llámalo <b>Plataforma</b>.</p>
+<figure><a href="img/02_crear_animatable.jpg" target="_blank"><img src="img/02_crear_animatable.jpg" alt="Añade un AnimatableBody2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>AnimatableBody2D</li><li><span class="num">2</span>Es un StaticBody2D</li><li><span class="num">3</span>AnimatableBody2D</li><li><span class="num">4</span>Mueve a otros cuerpos</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Dibujo y forma</h3>
+<p>Añade a Plataforma un <code>Sprite2D</code> con la textura <code>assets/plataformas/plataforma.png</code> (en el desplegable de Texture, <b>Carga Rápida</b>). Añade también un <code>CollisionShape2D</code> y en <b>Shape</b> elige <b>Nuevo RectangleShape2D</b>.</p>
+<figure><a href="img/03_forma.jpg" target="_blank"><img src="img/03_forma.jpg" alt="Dibujo y forma" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Plataforma y sus hijos</li><li><span class="num">2</span>Shape</li><li><span class="num">3</span>RectangleShape2D</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Tamaño y colisión de un solo sentido</h3>
+<p>Haz clic en el rectángulo y pon <b>Size</b> <code>32 × 8</code>, como el dibujo. Activa <b>One Way Collision</b>: la plataforma solo choca por arriba.</p>
+<figure><a href="img/04_tamano.jpg" target="_blank"><img src="img/04_tamano.jpg" alt="Tamaño y colisión de un solo sentido" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>32 × 8</li><li><span class="num">2</span>Solo por arriba</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Coloca la plataforma</h3>
+<p>Selecciona <b>Plataforma</b> y pon <b>Position</b> <code>x = 432</code>, <code>y = 228</code>: pegada al borde izquierdo del hueco, a la altura del suelo, para que la rana pueda subirse andando. Deja <b>Sync to Physics</b> activado.</p>
+<figure><a href="img/05_posicion.jpg" target="_blank"><img src="img/05_posicion.jpg" alt="Coloca la plataforma" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Sync to Physics</li><li><span class="num">2</span>432, 228</li><li><span class="num">3</span>Junto al borde</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Añade un AnimationPlayer</h3>
+<p>Con <b>Plataforma</b> seleccionada, añade un hijo <code>AnimationPlayer</code>. Abajo se abre el panel <b>Animación</b>.</p>
+<figure><a href="img/06_crear_animationplayer.jpg" target="_blank"><img src="img/06_crear_animationplayer.jpg" alt="Añade un AnimationPlayer" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>AnimationPlayer</li><li><span class="num">2</span>AnimationPlayer</li><li><span class="num">3</span>Reproduce animaciones</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Crea la animación «mover»</h3>
+<p>En el panel, pulsa <b>Animación → Nueva…</b>, escribe <code>mover</code> y acepta. Pon la duración a <code>2</code> segundos (el campo del reloj, a la derecha).</p>
+<figure><a href="img/07_nueva_animacion.jpg" target="_blank"><img src="img/07_nueva_animacion.jpg" alt="Crea la animación «mover»" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Animación nueva</li><li><span class="num">2</span>mover</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Primera clave: el punto de salida</h3>
+<p>Selecciona <b>Plataforma</b>. Con el panel de animación abierto, junto a cada propiedad aparece una <b>llave</b>. Con el cursor del tiempo en <code>0</code>, pulsa la llave de <b>Position</b> y luego <b>Crear</b>: se guarda la posición <code>432, 228</code>.</p>
+<figure><a href="img/08_clave.jpg" target="_blank"><img src="img/08_clave.jpg" alt="Primera clave: el punto de salida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Llave de Position</li><li><span class="num">2</span>Nueva pista</li><li><span class="num">3</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Segunda clave, bucle y autoplay</h3>
+<p>Lleva el cursor del tiempo a <code>2</code>, cambia <b>Position x</b> a <code>528</code> (el otro lado del hueco) y pulsa otra vez la llave. Pulsa el botón de bucle hasta que salga <b>ping-pong</b> (ida y vuelta) y activa <b>Reproducir automáticamente al cargar</b>.</p>
+<figure><a href="img/09_claves.jpg" target="_blank"><img src="img/09_claves.jpg" alt="Segunda clave, bucle y autoplay" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Pista position</li><li><span class="num">2</span>Claves en 0 s y 2 s</li><li><span class="num">3</span>2 segundos</li><li><span class="num">4</span>Ping-pong</li><li><span class="num">5</span>Autoplay</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Que se mueva al ritmo de la física</h3>
+<p>Selecciona el <b>AnimationPlayer</b> y en <b>Callback Mode → Process</b> elige <b>Physics</b>. Así la plataforma se mueve a la vez que el jugador y lo lleva sin tirones. Guarda.</p>
+<figure><a href="img/10_physics.jpg" target="_blank"><img src="img/10_physics.jpg" alt="Que se mueva al ritmo de la física" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Callback Mode</li><li><span class="num">2</span>Physics</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-11">
+<h3><span class="paso-n">11</span>Ejecuta y cruza</h3>
+<p>Ejecuta con <kbd>F5</kbd>. Ve hasta el hueco, espera a que llegue la plataforma y súbete andando: te lleva al otro lado. Prueba a quedarte quieto encima: la rana viaja con ella.</p>
+<figure><a href="img/11_juego.jpg" target="_blank"><img src="img/11_juego.jpg" alt="Ejecuta y cruza" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El juego</li><li><span class="num">2</span>Subida</li><li><span class="num">3</span>La plataforma la lleva</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>AnimatableBody2D</b> lleva encima a los cuerpos cuando se mueve.</li><li>Un <b>AnimationPlayer</b> anima propiedades con claves: aquí, dos posiciones.</li><li>Bucle <b>ping-pong</b> para ir y volver, y proceso <b>Physics</b> para moverse a la vez que el jugador.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>La plataforma no se mueve al ejecutar.</b> Activa <b>Reproducir automáticamente al cargar</b> en la animación <code>mover</code>.</li><li><b>La plataforma se mueve pero la rana se queda atrás o se cae.</b> Usa un <b>AnimatableBody2D</b> (no un StaticBody2D), con <b>Sync to Physics</b> activado y el AnimationPlayer en <b>Process: Physics</b>.</li><li><b>La plataforma salta de golpe al principio.</b> Pon el bucle en <b>ping-pong</b>: con el bucle normal vuelve de golpe a la primera clave.</li><li><b>Se mueve toda la escena o no pasa nada.</b> El AnimationPlayer debe ser <b>hijo de Plataforma</b> y las claves deben ponerse con Plataforma seleccionada.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia la duración a 4 segundos: ¿va más rápida o más lenta?</li><li>Haz una plataforma que suba y baje: anima <b>Position y</b> en vez de <b>x</b>.</li><li>Usa <code>plataforma_on.png</code> (8 dibujos) con un AnimatedSprite2D para que la plataforma tenga la hélice girando.</li></ul></section>
+<nav class="navegacion"><a href="../02-animaciones/index.html">← Animaciones del personaje con AnimatedSprite2D</a><a href="../04-frutas/index.html">Frutas animadas y coleccionables →</a></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

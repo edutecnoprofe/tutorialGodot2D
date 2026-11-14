@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 5. Un GameManager para los puntos y las vidas · Juego de plataformas</title>
+<meta name="description" content="Un nodo GameManager que guarda los datos de la partida (puntos y vidas) en un solo sitio. Las frutas le avisan para sumar puntos, y él emite señales cuando algo cambia.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 5</p>
+<h1>Un GameManager para los puntos y las vidas</h1>
+<p class="entrada">Un nodo GameManager que guarda los datos de la partida (puntos y vidas) en un solo sitio. Las frutas le avisan para sumar puntos, y él emite señales cuando algo cambia.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar, el nivel tendrá un nodo <b>GameManager</b> con los <b>puntos</b> y las <b>vidas</b>. Cada fruta, al recogerla, le pedirá que sume sus puntos, y cada fruta podrá valer distinto desde el Inspector.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 4: cinco frutas en el nivel que desaparecen al tocarlas y escriben «¡Fruta recogida!» en la salida.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>GameManager</code><p>Un nodo normal (aquí un <code>Node2D</code>) cuyo script guarda los datos de <b>toda la partida</b>. Así no están repartidos entre las frutas, el jugador…</p></div><div class="concepto"><code>signal</code><p>Con <code>signal puntos_cambiados</code> creamos <b>nuestras propias señales</b>. <code>emit()</code> las lanza, y cualquier nodo conectado se entera.</p></div><div class="concepto"><code>get_first_node_in_group()</code><p>Busca en la escena el primer nodo de un grupo. Con él cada fruta encuentra al GameManager sin saber dónde está.</p></div><div class="concepto"><code>@export</code><p>Hace que una variable aparezca en el <b>Inspector</b>: así cada fruta puede valer distintos puntos sin tocar el código.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre <code>nivel.tscn</code>. Tenemos cinco frutas que se recogen, pero nadie lleva la cuenta. Vamos a crear un nodo que guarde los datos de la partida.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Escena del nivel</li><li><span class="num">2</span>Cinco frutas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Añade un Node2D</h3>
+<p>Selecciona <b>Nivel</b>, pulsa <b>+</b> y añade un <code>Node2D</code>. Renómbralo a <b>GameManager</b>.</p>
+<figure><a href="img/02_crear_node2d.jpg" target="_blank"><img src="img/02_crear_node2d.jpg" alt="Añade un Node2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Node2D</li><li><span class="num">2</span>Node2D</li><li><span class="num">3</span>Un nodo 2D</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Ponlo en un grupo</h3>
+<p>Con <b>GameManager</b> seleccionado, en el panel <b>Grupos</b> pulsa <b>+</b> y crea el grupo <code>game_manager</code>. Por este grupo lo encontrarán las frutas.</p>
+<figure><a href="img/03_grupo.jpg" target="_blank"><img src="img/03_grupo.jpg" alt="Ponlo en un grupo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>GameManager</li><li><span class="num">2</span>Panel Grupos</li><li><span class="num">3</span>game_manager</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>El script del GameManager</h3>
+<p>Añade un script a GameManager (<code>game_manager.gd</code>, sin plantilla) con este código. Declara dos <b>señales propias</b>, las variables <code>vidas</code> (con <code>@export</code>, aparece en el Inspector) y <code>puntos</code>, y dos funciones: <code>sumar_puntos</code> y <code>perder_vida</code>. Cada una cambia su dato, lo muestra y <b>emite</b> su señal. Si las vidas llegan a 0, el nivel se reinicia.</p><pre class="codigo"><code>extends Node2D
+
+signal puntos_cambiados(puntos: int)
+signal vidas_cambiadas(vidas: int)
+
+@export var vidas := 3
+var puntos := 0
+
+
+func sumar_puntos(cantidad: int) -&gt; void:
+	puntos += cantidad
+	print(&quot;Puntos: &quot;, puntos)
+	puntos_cambiados.emit(puntos)
+
+
+func perder_vida() -&gt; void:
+	vidas -= 1
+	print(&quot;Vidas: &quot;, vidas)
+	vidas_cambiadas.emit(vidas)
+	if vidas &lt;= 0:
+		get_tree().reload_current_scene()</code></pre>
+<figure><a href="img/04_codigo_gm.jpg" target="_blank"><img src="img/04_codigo_gm.jpg" alt="El script del GameManager" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Señales propias</li><li><span class="num">2</span>Los datos</li><li><span class="num">3</span>Sumar puntos</li><li><span class="num">4</span>Perder una vida</li><li><span class="num">5</span>Vidas en el Inspector</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Las frutas avisan al GameManager</h3>
+<p>Abre <code>fruta.gd</code>. Añade <code>@export var puntos := 1</code> y cambia el <code>print</code> por dos líneas: buscamos el GameManager por su grupo y le pedimos que sume los puntos de esta fruta.</p><pre class="codigo"><code>extends Area2D
+
+@export var puntos := 1
+
+
+func _on_body_entered(body: Node2D) -&gt; void:
+	# Solo la recoge el jugador
+	if body.is_in_group(&quot;jugador&quot;):
+		# Avisamos al GameManager para que sume los puntos
+		var game_manager = get_tree().get_first_node_in_group(&quot;game_manager&quot;)
+		game_manager.sumar_puntos(puntos)
+		$AnimatedSprite2D.play(&quot;recoger&quot;)
+
+
+func _on_animated_sprite_2d_animation_finished() -&gt; void:
+	# Al terminar la animación «recoger», la fruta desaparece
+	queue_free()</code></pre>
+<figure><a href="img/05_codigo_fruta.jpg" target="_blank"><img src="img/05_codigo_fruta.jpg" alt="Las frutas avisan al GameManager" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Puntos de la fruta</li><li><span class="num">2</span>Busca el GameManager</li><li><span class="num">3</span>Le pide sumar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Una fruta que vale más</h3>
+<p>En el nivel, selecciona <b>Fruta2</b> (la de la isla alta, más difícil). Gracias a <code>@export</code>, en el Inspector aparece <b>Puntos</b>: ponle <code>5</code>. Guarda.</p>
+<figure><a href="img/06_puntos.jpg" target="_blank"><img src="img/06_puntos.jpg" alt="Una fruta que vale más" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Fruta2</li><li><span class="num">2</span>Vale 5</li><li><span class="num">3</span>La de la isla alta</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Ejecuta y mira la salida</h3>
+<p>Ejecuta y recoge frutas. En el panel <b>Salida</b> se ve cómo sube la cuenta: la fruta normal suma 1 y la de la isla alta, 5. Los puntos ya viven en un solo sitio; en el próximo tutorial los mostraremos en pantalla.</p>
+<figure><a href="img/07_salida.jpg" target="_blank"><img src="img/07_salida.jpg" alt="Ejecuta y mira la salida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>1 y luego 6</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>GameManager</b> guarda los datos de la partida en un solo sitio.</li><li>Las frutas lo encuentran por su <b>grupo</b> y le piden que sume.</li><li>Con <code>signal</code> y <code>emit()</code> avisa cuando algo cambia, y <code>@export</code> deja ajustar cada fruta desde el Inspector.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Error «Cannot call method 'sumar_puntos' on a null value».</b> La fruta no encuentra el GameManager: comprueba que está en el grupo <code>game_manager</code> (escrito igual) y que está en la escena del nivel.</li><li><b>No aparece «Puntos» en el Inspector de la fruta.</b> Guarda <code>fruta.gd</code> y vuelve a seleccionar la fruta. La variable debe llevar <code>@export</code>.</li><li><b>La fruta de 5 suma 1.</b> Cambia <b>Puntos</b> en la fruta del <b>nivel</b> (la instancia), no hace falta tocar <code>fruta.tscn</code>.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Pon a la fruta más escondida 10 puntos.</li><li>Haz que, al llegar a 10 puntos, el GameManager escriba «¡Récord!» en la salida.</li><li>Prueba <code>perder_vida()</code> llamándola desde la fruta en vez de <code>sumar_puntos</code>: con 3 frutas, el nivel se reinicia.</li></ul></section>
+<nav class="navegacion"><a href="../04-frutas/index.html">← Frutas animadas y coleccionables</a><a href="../06-ui/index.html">Un marcador en pantalla con CanvasLayer →</a></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

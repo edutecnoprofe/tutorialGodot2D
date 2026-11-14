@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 6. Un marcador en pantalla con CanvasLayer · Juego de plataformas</title>
+<meta name="description" content="Mostramos los puntos y las vidas en pantalla con un CanvasLayer y dos Label con la fuente pixel del kit. Las señales del GameManager actualizan el marcador solas.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 6</p>
+<h1>Un marcador en pantalla con CanvasLayer</h1>
+<p class="entrada">Mostramos los puntos y las vidas en pantalla con un CanvasLayer y dos Label con la fuente pixel del kit. Las señales del GameManager actualizan el marcador solas.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar verás arriba <b>PUNTOS</b> a la izquierda y <b>VIDAS</b> a la derecha. El marcador <b>no se mueve con la cámara</b> y cambia en cuanto recoges una fruta, porque escucha las señales del GameManager.</p><p class="partimos"><b>Partimos de:</b> El proyecto del tutorial 5 (GameManager con puntos, vidas y señales). Además, la imagen <code>assets/fuente/texto.png</code> ya viene importada como <b>fuente de imagen</b>: una cuadrícula de 10 × 5 letras de 8 × 10 píxeles (solo mayúsculas, números y algunos signos).</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>CanvasLayer</code><p>Capa que se dibuja <b>encima del juego</b> y no se mueve con la cámara. Todo lo que pongas dentro se queda fijo en la pantalla.</p></div><div class="concepto"><code>Label</code><p>Nodo de interfaz que muestra un texto. Cambiamos su propiedad <code>text</code> desde el código.</p></div><div class="concepto"><code>LabelSettings</code><p>Recurso con el aspecto del texto: fuente, tamaño, color, contorno… Varios Label pueden compartirlo.</p></div><div class="concepto"><code>Fuente de imagen</code><p>Una imagen con las letras dibujadas en cuadrícula que Godot convierte en fuente (pestaña <b>Importar</b>).</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>La fuente pixel del kit</h3>
+<p>Selecciona <code>assets/fuente/texto.png</code> y mira la pestaña <b>Importar</b>: está importada como <b>Font Data (Image Font)</b>, con <code>10</code> columnas y <code>5</code> filas. Así Godot la usa como una fuente más. Solo tiene mayúsculas.</p>
+<figure><a href="img/01_fuente.jpg" target="_blank"><img src="img/01_fuente.jpg" alt="La fuente pixel del kit" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>texto.png</li><li><span class="num">2</span>Importada como fuente</li><li><span class="num">3</span>10 × 5 letras</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Añade un CanvasLayer</h3>
+<p>En <code>nivel.tscn</code>, selecciona <b>Nivel</b> y añade un <code>CanvasLayer</code>. Llámalo <b>UI</b>: será la capa del marcador, fija en la pantalla.</p>
+<figure><a href="img/02_crear_canvaslayer.jpg" target="_blank"><img src="img/02_crear_canvaslayer.jpg" alt="Añade un CanvasLayer" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>CanvasLayer</li><li><span class="num">2</span>CanvasLayer</li><li><span class="num">3</span>Se dibuja aparte</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Un Label para los puntos</h3>
+<p>Añade a UI un <code>Label</code> llamado <b>Puntos</b>. En <b>Text</b> escribe <code>PUNTOS: 0</code>. En <b>Label Settings</b> elige <b>Nuevo LabelSettings</b>.</p>
+<figure><a href="img/03_label.jpg" target="_blank"><img src="img/03_label.jpg" alt="Un Label para los puntos" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>UI → Puntos</li><li><span class="num">2</span>PUNTOS: 0</li><li><span class="num">3</span>Label Settings</li><li><span class="num">4</span>Nuevo LabelSettings</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Fuente, tamaño y color</h3>
+<p>Haz clic en el LabelSettings. En <b>Font</b> arrastra <code>texto.png</code>, pon <b>Size</b> <code>10</code> (el tamaño real de las letras, para que se vean nítidas) y un <b>Color</b> oscuro, por ejemplo <code>2b2b4a</code>, que se lea sobre el cielo.</p>
+<figure><a href="img/04_label_settings.jpg" target="_blank"><img src="img/04_label_settings.jpg" alt="Fuente, tamaño y color" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>La fuente pixel</li><li><span class="num">2</span>Tamaño 10</li><li><span class="num">3</span>Color oscuro</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Coloca las dos etiquetas</h3>
+<p>En <b>Layout → Transform → Position</b> pon Puntos en <code>8, 8</code>. Duplica el Label (<kbd>Ctrl</kbd>+<kbd>D</kbd>), llámalo <b>Vidas</b>, con texto <code>VIDAS: 3</code> y posición <code>408, 8</code>. Comparten el mismo LabelSettings.</p>
+<figure><a href="img/05_etiquetas.jpg" target="_blank"><img src="img/05_etiquetas.jpg" alt="Coloca las dos etiquetas" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Puntos y Vidas</li><li><span class="num">2</span>Arriba a la izquierda</li><li><span class="num">3</span>Arriba a la derecha</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Conecta las señales del GameManager</h3>
+<p>Añade un script a <b>UI</b> (<code>ui.gd</code>, sin plantilla). Después selecciona <b>GameManager</b> y, en <b>Señales</b>, haz doble clic en <code>puntos_cambiados</code>. Escribe <code>UI</code> en el filtro, elige <b>UI</b> como receptor y pulsa <b>Conectar</b>. Haz lo mismo con <code>vidas_cambiadas</code>.</p>
+<figure><a href="img/06_senal_puntos.jpg" target="_blank"><img src="img/06_senal_puntos.jpg" alt="Conecta las señales del GameManager" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>puntos_cambiados</li><li><span class="num">2</span>Busca UI</li><li><span class="num">3</span>Receptor: UI</li><li><span class="num">4</span>Función nueva</li><li><span class="num">5</span>Conectar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Actualiza los textos</h3>
+<p>Cada función recibe el valor nuevo y lo escribe en su etiqueta. <code>str()</code> convierte el número en texto para poder unirlo.</p><pre class="codigo"><code>extends CanvasLayer
+
+
+func _on_game_manager_puntos_cambiados(puntos: int) -&gt; void:
+	$Puntos.text = &quot;PUNTOS: &quot; + str(puntos)
+
+
+func _on_game_manager_vidas_cambiadas(vidas: int) -&gt; void:
+	$Vidas.text = &quot;VIDAS: &quot; + str(vidas)</code></pre>
+<figure><a href="img/07_codigo_ui.jpg" target="_blank"><img src="img/07_codigo_ui.jpg" alt="Actualiza los textos" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Escribe los puntos</li><li><span class="num">2</span>Escribe las vidas</li><li><span class="num">3</span>Señales conectadas</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Ejecuta y recoge frutas</h3>
+<p>Ejecuta y recoge frutas: el marcador sube al momento. Aunque la cámara siga a la rana, las etiquetas se quedan en su sitio, porque están en el CanvasLayer.</p>
+<figure><a href="img/08_juego.jpg" target="_blank"><img src="img/08_juego.jpg" alt="Ejecuta y recoge frutas" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El juego</li><li><span class="num">2</span>Sube al recoger</li><li><span class="num">3</span>Fijo arriba</li><li><span class="num">4</span>La cámara se mueve</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>CanvasLayer</b> dibuja la interfaz fija en la pantalla, aunque la cámara se mueva.</li><li><b>LabelSettings</b> guarda el aspecto del texto, con la fuente pixel del kit.</li><li>Las <b>señales</b> del GameManager avisan a la UI, que solo cambia el texto.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>Las letras no se ven o salen cuadros vacíos.</b> La fuente solo tiene <b>mayúsculas</b>, números y <code>. , : ? ! ( ) + -</code>. Escribe el texto en mayúsculas.</li><li><b>El marcador se mueve con la cámara.</b> Los Label deben ser <b>hijos del CanvasLayer</b> UI, no del Nivel.</li><li><b>El texto se ve borroso.</b> Usa <b>Size 10</b> (o múltiplos: 20, 30) para que cada píxel de la fuente sea un píxel limpio.</li><li><b>El marcador no cambia.</b> Comprueba en <b>Señales</b> que <code>puntos_cambiados</code> tiene debajo la conexión a UI, y que el GameManager hace <code>emit()</code>.</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Pon un contorno al texto: en LabelSettings, <b>Outline</b> con tamaño 2 y color blanco.</li><li>Añade un tercer Label que diga <code>NIVEL 1</code> centrado arriba.</li><li>Pon el marcador dentro de un <code>HBoxContainer</code> para que se coloque solo.</li></ul></section>
+<nav class="navegacion"><a href="../05-game-manager/index.html">← Un GameManager para los puntos y las vidas</a><span></span></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>

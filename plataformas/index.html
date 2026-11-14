@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juego de plataformas</title>
+<meta name="description" content="Un juego de plataformas completo, tutorial a tutorial: personaje, animaciones, plataformas, frutas, puntos y marcador. Cada tutorial parte del anterior, con vídeo, paso a paso y proyecto descargable. Gráficos: Pixel Adventure, de Pixel Frog.">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="cabecera"><p class="serie"><a href="../index.html">Inicio</a> · Godot 4.6 · 2D · Pixel Adventure</p><h1>Juego de plataformas</h1>
+<p class="entrada">Un juego de plataformas completo, tutorial a tutorial: personaje, animaciones, plataformas, frutas, puntos y marcador. Cada tutorial parte del anterior, con vídeo, paso a paso y proyecto descargable. Gráficos: Pixel Adventure, de Pixel Frog.</p></header>
+<main><div class="lista"><a class="tarjeta" href="01-controlador/index.html"><span class="paso-n">1</span>
+<div><h3>Controlador básico: moverse y saltar</h3><p>Creamos el personaje del juego de plataformas con un CharacterBody2D: gravedad, salto desde el suelo, movimiento a izquierda y derecha, y una cámara que lo sigue.</p></div></a><a class="tarjeta" href="02-animaciones/index.html"><span class="paso-n">2</span>
+<div><h3>Animaciones del personaje con AnimatedSprite2D</h3><p>Cambiamos el dibujo fijo de la rana por un AnimatedSprite2D con cuatro animaciones (idle, run, jump y fall) y elegimos cuál suena según lo que hace el personaje.</p></div></a><a class="tarjeta" href="03-plataforma-movil/index.html"><span class="paso-n">3</span>
+<div><h3>Plataforma móvil con AnimationPlayer</h3><p>Una plataforma que va y viene sobre un hueco y lleva encima al jugador. Sin escribir código: un AnimatableBody2D y un AnimationPlayer con dos claves.</p></div></a><a class="tarjeta" href="04-frutas/index.html"><span class="paso-n">4</span>
+<div><h3>Frutas animadas y coleccionables</h3><p>Una escena Fruta (Area2D) que gira sin parar y, cuando la toca el jugador, hace un destello y desaparece. Las señales se conectan desde el editor y el jugador se identifica con un grupo.</p></div></a><a class="tarjeta" href="05-game-manager/index.html"><span class="paso-n">5</span>
+<div><h3>Un GameManager para los puntos y las vidas</h3><p>Un nodo GameManager que guarda los datos de la partida (puntos y vidas) en un solo sitio. Las frutas le avisan para sumar puntos, y él emite señales cuando algo cambia.</p></div></a><a class="tarjeta" href="06-ui/index.html"><span class="paso-n">6</span>
+<div><h3>Un marcador en pantalla con CanvasLayer</h3><p>Mostramos los puntos y las vidas en pantalla con un CanvasLayer y dos Label con la fuente pixel del kit. Las señales del GameManager actualizan el marcador solas.</p></div></a></div></main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../index.html">Inicio</a></p></footer>
+</body>
+</html>

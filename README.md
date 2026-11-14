@@ -4,7 +4,7 @@ Vídeos cortos y guías paso a paso con capturas del editor (Godot 4.6).
 
 Web: https://edutecnoprofe.github.io/tutorialGodot2D/
 
-## Videojuego 2D
+## Juego de físicas
 
 Cada tutorial enseña una sola cosa del motor 2D: [lista de tutoriales](videojuego2d.html).
 
@@ -14,6 +14,19 @@ Cada tutorial enseña una sola cosa del motor 2D: [lista de tutoriales](videojue
 4. [Un muelle con Area2D y AnimatedSprite2D](04-muelle-animado/index.html)
 5. [Crear pelotas con preload e instantiate](05-crear-pelotas/index.html)
 6. [Un Area2D que borra pelotas: grupos y queue_free](06-area-destructor/index.html)
+
+## Juego de plataformas
+
+Un juego de plataformas con la rana de Pixel Adventure, tutorial a tutorial: [lista](plataformas/index.html).
+
+1. [Controlador básico: moverse y saltar](plataformas/01-controlador/index.html)
+2. [Animaciones del personaje con AnimatedSprite2D](plataformas/02-animaciones/index.html)
+3. [Plataforma móvil con AnimationPlayer](plataformas/03-plataforma-movil/index.html)
+4. [Frutas animadas y coleccionables](plataformas/04-frutas/index.html)
+5. [Un GameManager para los puntos y las vidas](plataformas/05-game-manager/index.html)
+6. [Un marcador en pantalla con CanvasLayer](plataformas/06-ui/index.html)
+
+Gráficos: [Pixel Adventure 1](https://pixelfrog-assets.itch.io/pixel-adventure-1), de Pixel Frog.
 
 ## Teoría de programación: diccionarios (TIC II)
 

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutorial 1. Controlador básico: moverse y saltar · Juego de plataformas</title>
+<meta name="description" content="Creamos el personaje del juego de plataformas con un CharacterBody2D: gravedad, salto desde el suelo, movimiento a izquierda y derecha, y una cámara que lo sigue.">
+<link rel="stylesheet" href="../../estilo.css">
+</head>
+<body>
+<header class="cabecera">
+<p class="serie"><a href="../../index.html">Inicio</a> · <a href="../../plataformas/index.html">Juego de plataformas</a> · Tutorial 1</p>
+<h1>Controlador básico: moverse y saltar</h1>
+<p class="entrada">Creamos el personaje del juego de plataformas con un CharacterBody2D: gravedad, salto desde el suelo, movimiento a izquierda y derecha, y una cámara que lo sigue.</p>
+</header>
+<main>
+<div class="video"><video controls preload="metadata" poster="poster.jpg" src="video.mp4"></video></div>
+<section class="caja"><h2>Objetivo</h2><p>Al terminar tendrás una escena <b>Jugador</b> (CharacterBody2D) con su dibujo, su forma de colisión y una cámara. Con <kbd>A</kbd>/<kbd>D</kbd> o las flechas se moverá, y con <kbd>Espacio</kbd> saltará, pero <b>solo</b> cuando esté pisando el suelo.</p><p class="partimos"><b>Partimos de:</b> El proyecto de inicio (descárgalo abajo): una escena <code>nivel.tscn</code> con un fondo y un <code>TileMapLayer</code> llamado Suelo ya dibujado, la carpeta <code>assets</code> con los dibujos de Pixel Adventure, las acciones <code>izquierda</code>, <code>derecha</code> y <code>saltar</code> en el Mapa de Entrada y el filtro de texturas en <b>Nearest</b> para que el pixel art se vea nítido.</p>
+<div class="descargas"><a class="boton" href="proyecto_inicio.zip" download>⬇ Proyecto al empezar (.zip)</a><a class="boton" href="proyecto_final.zip" download>⬇ Proyecto terminado (.zip)</a></div></section>
+<section><h2>Nodos y conceptos</h2><div class="conceptos"><div class="concepto"><code>CharacterBody2D</code><p>Cuerpo físico que <b>movemos nosotros</b> desde el código. Choca con el suelo y las paredes, pero no lo empuja la física como a un RigidBody2D.</p></div><div class="concepto"><code>velocity</code><p>Velocidad del cuerpo en píxeles por segundo: <code>x</code> horizontal y <code>y</code> vertical (hacia abajo es positiva).</p></div><div class="concepto"><code>move_and_slide()</code><p>Mueve el cuerpo según <code>velocity</code> y lo hace <b>deslizar</b> por el suelo y las paredes en vez de atravesarlos.</p></div><div class="concepto"><code>is_on_floor()</code><p>Devuelve <code>true</code> si el cuerpo está pisando suelo. Lo usamos para no saltar en el aire.</p></div><div class="concepto"><code>Input.get_axis()</code><p>Junta dos acciones en un número: <code>-1</code> (izquierda), <code>0</code> (nada) o <code>1</code> (derecha).</p></div><div class="concepto"><code>Camera2D</code><p>Cámara que muestra la parte del nivel que rodea al nodo del que es hija. Con los <b>límites</b> no enseña lo que hay fuera del nivel.</p></div></div></section>
+<section><h2>Paso a paso</h2><section class="paso" id="paso-1">
+<h3><span class="paso-n">1</span>Punto de partida</h3>
+<p>Abre el proyecto de inicio. La escena <code>nivel.tscn</code> ya tiene un <b>Fondo</b> y un <b>Suelo</b> (un <code>TileMapLayer</code>: un mapa de baldosas con colisión). En <code>assets/jugador</code> están los dibujos de la rana.</p>
+<figure><a href="img/01_punto_partida.jpg" target="_blank"><img src="img/01_punto_partida.jpg" alt="Punto de partida" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Nivel, Fondo y Suelo</li><li><span class="num">2</span>Dibujos del jugador</li><li><span class="num">3</span>El nivel con un hueco</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-2">
+<h3><span class="paso-n">2</span>Mira las acciones de entrada</h3>
+<p>En <b>Proyecto → Configuración del Proyecto → Mapa de Entrada</b> ya están las tres acciones que usaremos: <code>izquierda</code>, <code>derecha</code> y <code>saltar</code>. Cada una tiene varias teclas. Cierra la ventana.</p>
+<figure><a href="img/02_mapa_entrada.jpg" target="_blank"><img src="img/02_mapa_entrada.jpg" alt="Mira las acciones de entrada" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Mapa de Entrada</li><li><span class="num">2</span>A y ←</li><li><span class="num">3</span>D y →</li><li><span class="num">4</span>Espacio, W y ↑</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-3">
+<h3><span class="paso-n">3</span>Nueva escena con un CharacterBody2D</h3>
+<p>Crea una escena nueva (<kbd>Ctrl</kbd>+<kbd>N</kbd>), pulsa <b>Otro Nodo</b>, busca <code>CharacterBody2D</code> y pulsa <b>Crear</b>. Renómbralo a <b>Jugador</b> (<kbd>F2</kbd>).</p>
+<figure><a href="img/03_crear_characterbody.jpg" target="_blank"><img src="img/03_crear_characterbody.jpg" alt="Nueva escena con un CharacterBody2D" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Busca CharacterBody2D</li><li><span class="num">2</span>CharacterBody2D</li><li><span class="num">3</span>Lo mueve un script</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-4">
+<h3><span class="paso-n">4</span>Dale un dibujo</h3>
+<p>Añade a Jugador un hijo <code>Sprite2D</code> (<kbd>Ctrl</kbd>+<kbd>A</kbd>). Arrastra <code>assets/jugador/idle.png</code> a su <b>Texture</b>. Esa imagen es una tira de 11 dibujos: en <b>Animation → Hframes</b> pon <code>11</code> para ver solo uno.</p>
+<figure><a href="img/04_sprite.jpg" target="_blank"><img src="img/04_sprite.jpg" alt="Dale un dibujo" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Sprite2D, hijo de Jugador</li><li><span class="num">2</span>idle.png</li><li><span class="num">3</span>Hframes: 11</li><li><span class="num">4</span>Un solo dibujo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-5">
+<h3><span class="paso-n">5</span>Dale una forma de colisión</h3>
+<p>Añade a Jugador un <code>CollisionShape2D</code>. En <b>Shape</b> elige <b>Nuevo RectangleShape2D</b> y dale un tamaño de <code>18 × 26</code>. En <b>Transform → Position</b> pon <code>y = 3</code>, para que la forma acabe justo en los pies.</p>
+<figure><a href="img/05_colision.jpg" target="_blank"><img src="img/05_colision.jpg" alt="Dale una forma de colisión" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>CollisionShape2D</li><li><span class="num">2</span>Rectángulo 18 × 26</li><li><span class="num">3</span>Position: 0, 3</li><li><span class="num">4</span>Cubre el cuerpo</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-6">
+<h3><span class="paso-n">6</span>Guarda la escena</h3>
+<p>Guarda con <kbd>Ctrl</kbd>+<kbd>S</kbd> como <code>jugador.tscn</code>. Tener al jugador en su propia escena nos permitirá ponerlo en cualquier nivel.</p>
+<figure><a href="img/06_guardar.jpg" target="_blank"><img src="img/06_guardar.jpg" alt="Guarda la escena" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>jugador.tscn</li><li><span class="num">2</span>Guardar</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-7">
+<h3><span class="paso-n">7</span>Añade un script sin plantilla</h3>
+<p>Selecciona <b>Jugador</b> y pulsa el botón de <b>añadir script</b>. Hereda de <code>CharacterBody2D</code>. <b>Desmarca Plantilla</b>: Godot trae una con movimiento ya hecho, pero aquí lo escribiremos nosotros para entenderlo. Se guarda como <code>res://jugador.gd</code>. Pulsa <b>Crear</b>.</p>
+<figure><a href="img/07_script.jpg" target="_blank"><img src="img/07_script.jpg" alt="Añade un script sin plantilla" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Hereda de CharacterBody2D</li><li><span class="num">2</span>Sin plantilla</li><li><span class="num">3</span>jugador.gd</li><li><span class="num">4</span>Crear</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-8">
+<h3><span class="paso-n">8</span>Escribe el controlador</h3>
+<p>Escribe este código y guarda. En <code>_physics_process</code> (60 veces por segundo): si está en el aire le sumamos la <b>gravedad</b>; si se pulsa <code>saltar</code> <b>y</b> pisa suelo, le damos velocidad hacia arriba (negativa); la dirección (-1, 0 o 1) por la velocidad da el movimiento horizontal. Al final, <code>move_and_slide()</code> lo mueve.</p><pre class="codigo"><code>extends CharacterBody2D
+
+@export var velocidad := 130.0
+@export var fuerza_salto := 350.0
+
+
+func _physics_process(delta: float) -&gt; void:
+	# Gravedad: si está en el aire, cae
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Salto: solo si está en el suelo
+	if Input.is_action_just_pressed(&quot;saltar&quot;) and is_on_floor():
+		velocity.y = -fuerza_salto
+
+	# Movimiento: -1 izquierda, 0 quieto, 1 derecha
+	var direccion := Input.get_axis(&quot;izquierda&quot;, &quot;derecha&quot;)
+	velocity.x = direccion * velocidad
+
+	move_and_slide()</code></pre>
+<figure><a href="img/08_codigo.jpg" target="_blank"><img src="img/08_codigo.jpg" alt="Escribe el controlador" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Ajustables en el Inspector</li><li><span class="num">2</span>Gravedad</li><li><span class="num">3</span>Salto desde el suelo</li><li><span class="num">4</span>-1, 0 o 1</li><li><span class="num">5</span>Mueve y desliza</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-9">
+<h3><span class="paso-n">9</span>Una cámara que le sigue</h3>
+<p>Vuelve a la vista <b>2D</b> y añade a Jugador un hijo <code>Camera2D</code>: como es su hija, irá con él. En <b>Limit</b> pon <code>Left 0</code>, <code>Top 0</code>, <code>Right 1024</code> y <code>Bottom 272</code> (el tamaño del nivel), para que no enseñe lo que hay fuera. Guarda.</p>
+<figure><a href="img/09_camara.jpg" target="_blank"><img src="img/09_camara.jpg" alt="Una cámara que le sigue" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Camera2D, hija de Jugador</li><li><span class="num">2</span>Límites del nivel</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-10">
+<h3><span class="paso-n">10</span>Pon al jugador en el nivel</h3>
+<p>Abre la pestaña <b>nivel</b>, selecciona <b>Nivel</b> y pulsa <b>Instanciar escena hija</b> (el icono de la cadena). Elige <code>jugador.tscn</code>. En <b>Transform → Position</b> pon <code>x = 48</code>, <code>y = 200</code>, sobre el suelo a la izquierda. Guarda.</p>
+<figure><a href="img/10_instanciar.jpg" target="_blank"><img src="img/10_instanciar.jpg" alt="Pon al jugador en el nivel" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>Instanciar escena hija</li><li><span class="num">2</span>Jugador en Nivel</li><li><span class="num">3</span>Position: 48, 200</li><li><span class="num">4</span>Aquí empieza</li></ol></figcaption></figure>
+</section><section class="paso" id="paso-11">
+<h3><span class="paso-n">11</span>Ejecuta y juega</h3>
+<p>Ejecuta con <kbd>F5</kbd>. Muévete con <kbd>A</kbd>/<kbd>D</kbd> o las flechas y salta con <kbd>Espacio</kbd> a las islas. Prueba a pulsar saltar en el aire: no pasa nada, porque solo saltamos con <code>is_on_floor()</code>. La cámara te sigue sin salirse del nivel.</p>
+<figure><a href="img/11_juego.jpg" target="_blank"><img src="img/11_juego.jpg" alt="Ejecuta y juega" loading="lazy"></a><figcaption><ol class="marcas"><li><span class="num">1</span>El juego</li><li><span class="num">2</span>¡Salta!</li><li><span class="num">3</span>Aterriza en la isla</li></ol></figcaption></figure>
+</section></section>
+<section class="caja"><h2>Resumen</h2><ul><li>Un <b>CharacterBody2D</b> se mueve con su <code>velocity</code> y <code>move_and_slide()</code>.</li><li>La gravedad se suma solo en el aire, y se salta solo si <code>is_on_floor()</code>.</li><li><code>Input.get_axis()</code> convierte dos teclas en -1, 0 o 1, y la <b>Camera2D</b> hija sigue al jugador.</li></ul></section>
+<section><h2>Si algo falla</h2><ul class="errores"><li><b>El jugador cae y atraviesa el suelo.</b> Comprueba que el <b>CollisionShape2D</b> tiene una forma (Shape) y que es hijo de Jugador.</li><li><b>No se mueve o da error «The InputMap action "saltar" doesn't exist».</b> El nombre de la acción en el código debe ser <b>exactamente</b> el del Mapa de Entrada, en minúsculas.</li><li><b>Salta en el aire sin parar.</b> Falta <code>and is_on_floor()</code> en la condición del salto.</li><li><b>El jugador sale volando hacia abajo al saltar.</b> La velocidad del salto debe ser <b>negativa</b> (<code>-fuerza_salto</code>): en Godot, la <code>y</code> crece hacia abajo.</li><li><b>La rana se ve borrosa.</b> En <b>Proyecto → Configuración → Renderizado → Texturas</b>, el filtro por defecto debe ser <b>Nearest</b> (en el proyecto de inicio ya lo está).</li></ul></section>
+<section class="caja retos"><h2>Prueba tú</h2><ul><li>Cambia <b>Velocidad</b> y <b>Fuerza Salto</b> desde el Inspector (gracias a <code>@export</code>) hasta que el salto te guste.</li><li>Activa <b>Position Smoothing</b> en la Camera2D: ¿qué cambia?</li><li>Haz que el salto sea más corto si sueltas la tecla pronto: con <code>Input.is_action_just_released("saltar")</code>, si <code>velocity.y &lt; 0</code>, divídela entre 2.</li></ul></section>
+<nav class="navegacion"><span></span><a href="../02-animaciones/index.html">Animaciones del personaje con AnimatedSprite2D →</a></nav>
+</main>
+<footer class="pie"><p>Juego de plataformas · Godot 4.6 · <a href="../../plataformas/index.html">Todos los tutoriales de la serie</a> · <a href="../../index.html">Inicio</a></p></footer>
+</body>
+</html>
